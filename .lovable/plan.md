@@ -8,6 +8,11 @@ Plataforma operacional modular para empresas de ônibus urbano. Protótipo front
 - lucide-react para ícones lineares, react-hook-form + zod nos formulários.
 - TanStack Query para consumir a camada `mockApi` (troca trivial por fetch/axios depois).
 
+## Identidade visual
+
+- Logo oficial TopBus já incorporado em `src/assets/topbus-logo.png`. Será usado na tela de login, no header e no rodapé.
+- Paleta derivada do logo: azul petróleo profundo como cor primária, brancos e cinzas claros como base.
+
 ## Design System
 
 - Paleta: azul petróleo / azul escuro / branco / cinza muito claro / grafite, com verde, âmbar e vermelho discretos para status. Sem neon, sem gradientes pesados, sem emojis.
