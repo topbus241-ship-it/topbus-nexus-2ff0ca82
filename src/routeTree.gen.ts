@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VeiculosRouteImport } from './routes/veiculos'
+import { Route as TypebotConfigRouteImport } from './routes/typebot-config'
 import { Route as TypebotRouteImport } from './routes/typebot'
 import { Route as StatusFrotaRouteImport } from './routes/status-frota'
 import { Route as SetoresRouteImport } from './routes/setores'
@@ -29,6 +30,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const VeiculosRoute = VeiculosRouteImport.update({
   id: '/veiculos',
   path: '/veiculos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TypebotConfigRoute = TypebotConfigRouteImport.update({
+  id: '/typebot-config',
+  path: '/typebot-config',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TypebotRoute = TypebotRouteImport.update({
@@ -123,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/setores': typeof SetoresRoute
   '/status-frota': typeof StatusFrotaRoute
   '/typebot': typeof TypebotRoute
+  '/typebot-config': typeof TypebotConfigRoute
   '/veiculos': typeof VeiculosRoute
 }
 export interface FileRoutesByTo {
@@ -141,6 +148,7 @@ export interface FileRoutesByTo {
   '/setores': typeof SetoresRoute
   '/status-frota': typeof StatusFrotaRoute
   '/typebot': typeof TypebotRoute
+  '/typebot-config': typeof TypebotConfigRoute
   '/veiculos': typeof VeiculosRoute
 }
 export interface FileRoutesById {
@@ -160,6 +168,7 @@ export interface FileRoutesById {
   '/setores': typeof SetoresRoute
   '/status-frota': typeof StatusFrotaRoute
   '/typebot': typeof TypebotRoute
+  '/typebot-config': typeof TypebotConfigRoute
   '/veiculos': typeof VeiculosRoute
 }
 export interface FileRouteTypes {
@@ -180,6 +189,7 @@ export interface FileRouteTypes {
     | '/setores'
     | '/status-frota'
     | '/typebot'
+    | '/typebot-config'
     | '/veiculos'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -198,6 +208,7 @@ export interface FileRouteTypes {
     | '/setores'
     | '/status-frota'
     | '/typebot'
+    | '/typebot-config'
     | '/veiculos'
   id:
     | '__root__'
@@ -216,6 +227,7 @@ export interface FileRouteTypes {
     | '/setores'
     | '/status-frota'
     | '/typebot'
+    | '/typebot-config'
     | '/veiculos'
   fileRoutesById: FileRoutesById
 }
@@ -235,6 +247,7 @@ export interface RootRouteChildren {
   SetoresRoute: typeof SetoresRoute
   StatusFrotaRoute: typeof StatusFrotaRoute
   TypebotRoute: typeof TypebotRoute
+  TypebotConfigRoute: typeof TypebotConfigRoute
   VeiculosRoute: typeof VeiculosRoute
 }
 
@@ -245,6 +258,13 @@ declare module '@tanstack/react-router' {
       path: '/veiculos'
       fullPath: '/veiculos'
       preLoaderRoute: typeof VeiculosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/typebot-config': {
+      id: '/typebot-config'
+      path: '/typebot-config'
+      fullPath: '/typebot-config'
+      preLoaderRoute: typeof TypebotConfigRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/typebot': {
@@ -371,8 +391,19 @@ const rootRouteChildren: RootRouteChildren = {
   SetoresRoute: SetoresRoute,
   StatusFrotaRoute: StatusFrotaRoute,
   TypebotRoute: TypebotRoute,
+  TypebotConfigRoute: TypebotConfigRoute,
   VeiculosRoute: VeiculosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

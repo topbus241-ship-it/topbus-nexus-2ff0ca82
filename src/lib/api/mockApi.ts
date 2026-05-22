@@ -1,28 +1,9 @@
-/**
- * TopBus OS — Mock API layer.
- *
- * All UI components consume data through these functions only.
- * To migrate to a real backend, replace each function body with `fetch('/api/...')`
- * (or axios) — function signatures and return shapes can remain identical.
- *
- * JWT interceptor placeholder is documented at the bottom of this file.
- */
+/*
+  Backend API adapter
+  This file replaces the previous mockApi implementation and calls the real backend endpoints at /api/...
+  It expects a JWT stored in localStorage under `topbus-token` when auth is used.
+*/
 
-import {
-  dashboardMetricsMock,
-  damageRecordsMock,
-  driversMock,
-  fleetStatusMock,
-  insightsMock,
-  moduleDefinitionsMock,
-  providersMock,
-  routesMock,
-  schedulesMock,
-  sectorsMock,
-  serviceRecordsMock,
-  uploadedDocumentsMock,
-  vehiclesMock,
-} from "@/lib/mocks";
 import type {
   DamageRecord,
   DashboardMetric,
@@ -37,24 +18,35 @@ import type {
   ServiceRecord,
   UploadedDocument,
   Vehicle,
-} from "@/lib/types";
+} from '@/lib/types';
 
-const delay = <T>(data: T, ms = 220): Promise<T> =>
-  new Promise((resolve) => setTimeout(() => resolve(data), ms));
+const getToken = () => (typeof window !== 'undefined' ? localStorage.getItem('topbus-token') : null);
 
-export const getDashboardMetrics = (): Promise<DashboardMetric[]> => delay(dashboardMetricsMock);
-export const getSectors = (): Promise<Sector[]> => delay(sectorsMock);
-export const getVehicles = (): Promise<Vehicle[]> => delay(vehiclesMock);
-export const getDrivers = (): Promise<Driver[]> => delay(driversMock);
-export const getProviders = (): Promise<Provider[]> => delay(providersMock);
-export const getRoutes = (): Promise<Route[]> => delay(routesMock);
-export const getSchedules = (): Promise<Schedule[]> => delay(schedulesMock);
-export const getServiceRecords = (): Promise<ServiceRecord[]> => delay(serviceRecordsMock);
-export const getDamageRecords = (): Promise<DamageRecord[]> => delay(damageRecordsMock);
-export const getFleetStatus = (): Promise<FleetStatus[]> => delay(fleetStatusMock);
-export const getInsights = (): Promise<Insight[]> => delay(insightsMock);
-export const getUploadedDocuments = (): Promise<UploadedDocument[]> => delay(uploadedDocumentsMock);
-export const getModuleDefinitions = (): Promise<ModuleDefinition[]> => delay(moduleDefinitionsMock);
+async function fetchJson(path: string, opts: RequestInit = {}) {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  const token = getToken();
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  const res = await fetch(path, { ...opts, headers: { ...(opts.headers || {}), ...headers } });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`API error ${res.status}: ${text}`);
+  }
+  return res.json();
+}
+
+export const getDashboardMetrics = async (): Promise<DashboardMetric[]> => fetchJson('/api/data/dashboardMetrics');
+export const getSectors = async (): Promise<Sector[]> => fetchJson('/api/data/sectors');
+export const getVehicles = async (): Promise<Vehicle[]> => fetchJson('/api/data/vehicles');
+export const getDrivers = async (): Promise<Driver[]> => fetchJson('/api/data/drivers');
+export const getProviders = async (): Promise<Provider[]> => fetchJson('/api/data/providers');
+export const getRoutes = async (): Promise<Route[]> => fetchJson('/api/data/routes');
+export const getSchedules = async (): Promise<Schedule[]> => fetchJson('/api/data/schedules');
+export const getServiceRecords = async (): Promise<ServiceRecord[]> => fetchJson('/api/data/serviceRecords');
+export const getDamageRecords = async (): Promise<DamageRecord[]> => fetchJson('/api/data/damageRecords');
+export const getFleetStatus = async (): Promise<FleetStatus[]> => fetchJson('/api/data/fleetStatus');
+export const getInsights = async (): Promise<Insight[]> => fetchJson('/api/data/insights');
+export const getUploadedDocuments = async (): Promise<UploadedDocument[]> => fetchJson('/api/data/uploadedDocuments');
+export const getModuleDefinitions = async (): Promise<ModuleDefinition[]> => fetchJson('/api/data/moduleDefinitions');
 
 export const findScheduleByChapaDateTime = async (
   chapa: string,
@@ -62,54 +54,24 @@ export const findScheduleByChapaDateTime = async (
   time: string,
 ): Promise<Schedule | null> => {
   const list = await getSchedules();
-  return (
-    list.find(
-      (s) =>
-        s.chapa === chapa.trim() &&
-        s.date === date.trim() &&
-        s.time === time.trim(),
-    ) ?? null
-  );
+  return list.find((s) => s.chapa === chapa.trim() && s.date === date.trim() && s.time === time.trim()) ?? null;
 };
 
-export const createRecord = async <T extends object>(
-  resource: string,
-  payload: T,
-): Promise<T & { id: string }> => {
-  // Future: POST /api/${resource}
-  console.info("[mockApi.createRecord]", resource, payload);
-  return delay({ ...payload, id: `${resource}-${Date.now()}` });
+export const createRecord = async <T extends object>(resource: string, payload: T): Promise<any> => {
+  return fetchJson(`/api/data/${resource}`, { method: 'POST', body: JSON.stringify(payload) });
 };
 
-export const updateRecord = async <T extends object>(
-  resource: string,
-  id: string,
-  payload: T,
-): Promise<T & { id: string }> => {
-  console.info("[mockApi.updateRecord]", resource, id, payload);
-  return delay({ ...payload, id });
+export const updateRecord = async <T extends object>(resource: string, id: string, payload: T): Promise<any> => {
+  return fetchJson(`/api/data/${resource}/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
 };
 
-export const uploadFile = async (
-  file: File,
-  meta: Record<string, string>,
-): Promise<{ id: string; fileName: string }> => {
-  console.info("[mockApi.uploadFile]", file.name, meta);
-  return delay({ id: `up-${Date.now()}`, fileName: file.name });
+export const uploadFile = async (file: File, meta: Record<string, string>): Promise<{ id: string; fileName: string }> => {
+  // Backend currently persists uploadedDocuments record; actual file storage should be implemented separately.
+  const payload = { fileName: file.name, ...meta };
+  return fetchJson('/api/data/uploadedDocuments', { method: 'POST', body: JSON.stringify(payload) });
 };
 
-export const generatePdf = async (
-  resource: string,
-  id: string,
-): Promise<{ url: string }> => {
-  console.info("[mockApi.generatePdf]", resource, id);
-  return delay({ url: `/mock-pdf/${resource}/${id}.pdf` });
+export const generatePdf = async (resource: string, id: string): Promise<{ url: string }> => {
+  // If backend provides a PDF generator endpoint
+  return fetchJson(`/api/data/${resource}/${id}/pdf`);
 };
-
-/**
- * JWT interceptor (placeholder for real backend)
- *
- * Example:
- * const token = localStorage.getItem('topbus-token');
- * fetch(url, { headers: { Authorization: `Bearer ${token}` } });
- */

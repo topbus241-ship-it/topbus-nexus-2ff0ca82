@@ -1,0 +1,227 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum UserRole {
+  master
+  manutencao
+  portaria
+  operacao
+  financeiro
+  rh
+  abastecimento
+  frota
+}
+
+enum VehicleStatus {
+  ativo
+  manutencao
+  parado
+  aguardando_peca
+  aguardando_terceiro
+  liberado
+  inativo
+}
+
+enum SectorStatus {
+  operacional
+  atencao
+  critico
+}
+
+enum DriverStatus {
+  ativo
+  afastado
+  ferias
+}
+
+enum ServiceStatus {
+  registrado
+  em_andamento
+  concluido
+  aguardando
+}
+
+enum DamageStatus {
+  registrada
+  orcamento
+  aprovada
+  concluida
+}
+
+enum InsightSeverity {
+  info
+  alerta
+  critico
+}
+
+// Models
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  role      UserRole
+  sector    Sector?  @relation(fields: [sectorId], references: [id])
+  sectorId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Sector {
+  id            String  @id @default(uuid())
+  name          String
+  description   String?
+  moduleCount   Int     @default(0)
+  recentRecords Int     @default(0)
+  status        SectorStatus @default(operacional)
+  users         User[]
+  modules       ModuleDefinition[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Vehicle {
+  id        String        @id @default(uuid())
+  number    String        @unique
+  type      String
+  status    VehicleStatus @default(ativo)
+  note      String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model Driver {
+  id            String       @id @default(uuid())
+  name          String
+  chapa         String
+  role          String
+  status        DriverStatus @default(ativo)
+  lastSchedule  String?
+  vehicleNumber String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Provider {
+  id              String  @id @default(uuid())
+  name            String
+  serviceType     String
+  status          String
+  servicesCount   Int     @default(0)
+  accumulatedValue Float  @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Route {
+  id       String   @id @default(uuid())
+  line     String
+  name     String
+  status   String
+  vehicles String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ServiceRecord {
+  id           String        @id @default(uuid())
+  vehicleNumber String
+  providerName String
+  executor     String
+  serviceType  String
+  serviceDone  String
+  description  String?
+  value        Float
+  authorizer   String
+  status       ServiceStatus @default(registrado)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model DamageRecord {
+  id            String       @id @default(uuid())
+  vehicleNumber String
+  driverName    String
+  chapa         String
+  reporter      String
+  damageType    String
+  affectedPart  String
+  description   String
+  driverVersion String?
+  portariaVersion String?
+  item          String
+  quantity      Int
+  unitValue     Float
+  laborValue    Float
+  otherValue    Float
+  totalValue    Float
+  status        DamageStatus @default(registrada)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model ModuleDefinition {
+  id          String   @id @default(uuid())
+  name        String
+  sector      Sector   @relation(fields: [sectorId], references: [id])
+  sectorId    String
+  description String?
+  fields      Json
+  permissions UserRole[]
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Insight {
+  id          String          @id @default(uuid())
+  title       String
+  description String
+  severity    InsightSeverity
+  category    String
+  createdAt   DateTime        @default(now())
+}
+
+model UploadedDocument {
+  id          String   @id @default(uuid())
+  sector      String
+  documentType String
+  fileName    String
+  note        String?
+  uploadedAt  DateTime @default(now())
+  uploadedBy  String
+}
+
+// Typebot / conversations
+model TypebotConversation {
+  id        String   @id @default(uuid())
+  userId    String?
+  sectorId  String?
+  messages  TypebotMessage[]
+  createdAt DateTime @default(now())
+}
+
+model TypebotMessage {
+  id              String   @id @default(uuid())
+  conversation    TypebotConversation @relation(fields: [conversationId], references: [id])
+  conversationId  String
+  sender          String
+  content         String
+  metadata        Json?
+  createdAt       DateTime @default(now())
+}
+
+model ChatConfig {
+  id         String   @id @default(uuid())
+  sectorId   String
+  label      String
+  buttons    Json
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

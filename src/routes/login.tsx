@@ -1,9 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth, ROLE_LABEL } from "@/lib/auth/AuthContext";
 import type { UserRole } from "@/lib/types";
 import logo from "@/assets/topbus-logo.png";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -22,15 +23,41 @@ const ROLE_OPTIONS: { role: UserRole; description: string; defaultName: string }
   { role: "frota", description: "Status da frota, veículos parados e disponibilidade.", defaultName: "Gestor Frota" },
 ];
 
+const VISIBLE_ROLE_OPTIONS = ROLE_OPTIONS.filter((opt) => opt.role !== "master");
+
 function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [selected, setSelected] = useState<UserRole>("master");
+  const [selected, setSelected] = useState<UserRole>(VISIBLE_ROLE_OPTIONS[0].role);
+  const [name, setName] = useState(VISIBLE_ROLE_OPTIONS[0].defaultName);
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const selectedOption = ROLE_OPTIONS.find((o) => o.role === selected);
+    if (selectedOption) {
+      setName(selectedOption.defaultName);
+    }
+  }, [selected]);
 
   const handleEnter = () => {
-    const opt = ROLE_OPTIONS.find((o) => o.role === selected)!;
-    login({ name: opt.defaultName, role: selected });
-    navigate({ to: "/" });
+    const payload = { name, email: email.trim() || undefined, role: selected };
+    fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then(async (r) => {
+        if (!r.ok) throw new Error('login_failed');
+        return r.json();
+      })
+      .then((data) => {
+        login({ id: data.user.id, name: data.user.name, email: data.user.email, role: data.user.role }, data.token);
+        navigate({ to: '/' });
+      })
+      .catch(() => {
+        login({ name, email: email.trim() || undefined, role: selected });
+        navigate({ to: '/' });
+      });
   };
 
   return (
@@ -90,39 +117,65 @@ function LoginPage() {
           </div>
 
           <div className="mb-7">
-            <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground mb-2">Acesso</div>
+            <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground mb-2">Acesso seguro</div>
             <h1 className="text-[26px] sm:text-3xl font-semibold tracking-tight">Entrar na plataforma</h1>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Selecione o perfil de acesso para visualizar a navegação correspondente.
+            <p className="mt-2 max-w-xl text-sm text-muted-foreground leading-relaxed">
+              Informe o nome do colaborador e escolha rapidamente o perfil. Menos foco nas opções visíveis, mais clareza no acesso.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-2.5 mb-6 max-h-[420px] sm:max-h-none overflow-auto pr-1">
-            {ROLE_OPTIONS.map((opt) => (
-              <button
-                key={opt.role}
-                type="button"
-                onClick={() => setSelected(opt.role)}
-                className={cn(
-                  "text-left rounded-lg border p-3.5 transition-all",
-                  selected === opt.role
-                    ? "border-primary bg-primary/[0.04] ring-1 ring-primary/30"
-                    : "border-border bg-card hover:border-primary/40 hover:bg-secondary/50",
-                )}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="text-sm font-medium">{ROLE_LABEL[opt.role]}</div>
-                  <span className={cn("h-2 w-2 rounded-full", selected === opt.role ? "bg-primary" : "bg-border")} />
-                </div>
-                <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">{opt.description}</p>
-              </button>
-            ))}
+          <div className="space-y-4 mb-6">
+            <div className="grid gap-2">
+              <label htmlFor="name" className="text-sm font-semibold text-foreground">Nome do colaborador</label>
+              <input
+                id="name"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-1 focus:ring-primary/20"
+                placeholder="Nome completo ou matrícula"
+              />
+            </div>
+
+            <div className="grid gap-2">
+              <label htmlFor="email" className="text-sm font-semibold text-foreground">Email (opcional)</label>
+              <input
+                id="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-1 focus:ring-primary/20"
+                placeholder="email@empresa.com"
+              />
+            </div>
+
+            <div className="grid gap-2">
+              <label htmlFor="role" className="text-sm font-semibold text-foreground">Perfil de acesso</label>
+              <Select value={selected} onValueChange={(value) => {
+                setSelected(value as UserRole);
+                const selectedOption = ROLE_OPTIONS.find((o) => o.role === value);
+                if (selectedOption) setName(selectedOption.defaultName);
+              }}>
+                <SelectTrigger id="role">
+                  <SelectValue placeholder="Escolher perfil" />
+                </SelectTrigger>
+                <SelectContent>
+                  {VISIBLE_ROLE_OPTIONS.map((opt) => (
+                    <SelectItem key={opt.role} value={opt.role}>
+                      {ROLE_LABEL[opt.role]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <Button onClick={handleEnter} className="w-full gap-2" size="lg">
-            Entrar como {ROLE_LABEL[selected]}
+            Acessar como {ROLE_LABEL[selected]}
             <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
           </Button>
+
+          <p className="mt-4 text-center text-[11px] text-muted-foreground">
+            Seleção rápida com os perfis mais comuns. Perfis adicionais ficam disponíveis apenas via login autorizado.
+          </p>
 
           <p className="mt-4 text-center text-[11px] text-muted-foreground">
             DEV -{" "}

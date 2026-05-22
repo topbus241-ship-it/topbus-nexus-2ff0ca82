@@ -4,6 +4,7 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { StatusBadge } from "@/components/common/StatusBadge";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth/AuthContext";
 import { MessageSquare, ShieldAlert, Wrench, FileText, Send, ArrowRight, Bot, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 
@@ -11,7 +12,7 @@ export const Route = createFileRoute("/typebot")({
   component: ChatOtimizadoPage,
 });
 
-type Msg = { id: string; from: "bot" | "user"; text: string; options?: { label: string; next: string }[] };
+type Msg = { id: string; from: "bot" | "user"; text: string; options?: { label: string; next?: string }[] };
 
 const FLOW = [
   { label: "Chat Otimizado", hint: "Botões e formulário sem atrito" },
@@ -29,12 +30,7 @@ const QUICK = [
 ];
 
 const initialMessages: Msg[] = [
-  {
-    id: "m0",
-    from: "bot",
-    text: "Olá! Sou o assistente do TopBus OS. O que você precisa registrar agora?",
-    options: QUICK.map((q) => ({ label: q.label, next: q.id })),
-  },
+  { id: "m0", from: "bot", text: "Olá! Sou o assistente do TopBus OS. Para começar, informe seu ID (chapa ou email) ou faça login.", options: [] },
 ];
 
 const FLOWS: Record<string, Msg[]> = {
@@ -65,24 +61,89 @@ const FLOWS: Record<string, Msg[]> = {
 };
 
 function ChatOtimizadoPage() {
+  const { user } = useAuth();
   const [messages, setMessages] = useState<Msg[]>(initialMessages);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [buttons, setButtons] = useState<{ label: string; next?: string }[]>([]);
+  const [collaboratorId, setCollaboratorId] = useState<string>("");
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
 
+  useEffect(() => {
+    if (user) {
+      const id = user.email ?? user.id ?? user.name;
+      fetch('/api/typebot/init-public', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ collaboratorId: id }) })
+        .then((r) => r.json())
+        .then((data) => {
+          setConversationId(data.conversationId);
+          setButtons(data.buttons || []);
+          setMessages([{ id: 'm0', from: 'bot', text: `Olá ${user.name}. Em que posso ajudar?`, options: (data.buttons || []).map((b: any) => ({ label: b.label, next: b.next || 'fim' })) }]);
+        })
+        .catch(() => {
+          setMessages([{ id: 'm0', from: 'bot', text: 'Olá! Sou o assistente do TopBus OS. O que você precisa registrar agora?', options: QUICK.map((q) => ({ label: q.label, next: q.id })) }]);
+        });
+    }
+  }, [user]);
+
   const choose = (label: string, next: string) => {
     const userMsg: Msg = { id: `u-${Date.now()}`, from: "user", text: label };
-    const botMsgs = (FLOWS[next] ?? []).map((m) => ({ ...m, id: `${m.id}-${Date.now()}` }));
-    setMessages((curr) => [...curr, userMsg, ...botMsgs]);
+    setMessages((curr) => [...curr, userMsg]);
+
+    if (conversationId) {
+      fetch('/api/typebot/public-message', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ conversationId, content: label, option: next }) })
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.bot) {
+            const botMsg: Msg = { id: `b-${Date.now()}`, from: 'bot', text: data.bot.content ?? 'Registro recebido.' };
+            setMessages((curr) => [...curr, botMsg]);
+          }
+        })
+        .catch(() => {
+          const botMsgs = (FLOWS[next] ?? []).map((m) => ({ ...m, id: `${m.id}-${Date.now()}` }));
+          setMessages((curr) => [...curr, ...botMsgs]);
+        });
+    } else {
+      const botMsgs = (FLOWS[next] ?? []).map((m) => ({ ...m, id: `${m.id}-${Date.now()}` }));
+      setMessages((curr) => [...curr, ...botMsgs]);
+    }
+
     if (next === "fim") toast.success("Registro enviado", { description: "Encaminhado para o setor responsável." });
+  };
+
+  const handleInitPublic = () => {
+    if (!collaboratorId) return toast.error('Informe o ID do colaborador');
+    fetch('/api/typebot/init-public', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ collaboratorId }) })
+      .then((r) => r.json())
+      .then((data) => {
+        setConversationId(data.conversationId);
+        setButtons(data.buttons || []);
+        setMessages([{ id: 'm0', from: 'bot', text: `Olá. Em que posso ajudar?`, options: (data.buttons || []).map((b: any) => ({ label: b.label, next: b.next || 'fim' })) }]);
+      })
+      .catch(() => toast.error('Falha ao iniciar chat'));
+  };
+
+  const handleFileUpload = async (file?: File) => {
+    if (!file || !conversationId) return toast.error('Nenhum arquivo ou conversa ativa');
+    const form = new FormData();
+    form.append('file', file);
+    form.append('conversationId', conversationId);
+    form.append('uploadedBy', user?.name ?? 'public');
+    const res = await fetch('/api/typebot/upload', { method: 'POST', body: form });
+    if (!res.ok) return toast.error('Upload falhou');
+    const json = await res.json();
+    toast.success('Arquivo enviado');
+    const botMsg: Msg = { id: `b-${Date.now()}`, from: 'bot', text: 'Arquivo recebido e anexado ao registro.' };
+    setMessages((curr) => [...curr, botMsg]);
   };
 
   const reset = () => setMessages(initialMessages);
 
   return (
-    <AppLayout>
+    <AppLayout allowUnauthenticated>
       <PageHeader
         breadcrumb="Plataforma"
         title="Chat Otimizado"
@@ -126,7 +187,7 @@ function ChatOtimizadoPage() {
                       {m.options.map((o) => (
                         <button
                           key={o.label}
-                          onClick={() => choose(o.label, o.next)}
+                          onClick={() => choose(o.label, o.next ?? 'fim')}
                           className="rounded-md border border-border bg-card px-2.5 py-1.5 text-xs font-medium transition-colors hover:border-primary/40 hover:bg-primary/[0.04]"
                         >
                           {o.label}
@@ -139,19 +200,35 @@ function ChatOtimizadoPage() {
             ))}
           </div>
 
+          {!conversationId && !user && (
+            <div className="border-t border-border px-4 py-3">
+              <div className="flex items-center gap-2">
+                <input value={collaboratorId} onChange={(e) => setCollaboratorId(e.target.value)} placeholder="ID do colaborador (chapa ou email)" className="flex-1 rounded-md border p-2" />
+                <Button onClick={handleInitPublic}>Iniciar</Button>
+              </div>
+            </div>
+          )}
+
           <div className="border-t border-border px-4 py-3">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-              {QUICK.map((a) => (
+              {/* show configured buttons when available */}
+              {(buttons.length > 0 ? buttons : QUICK).map((a: any) => (
                 <button
-                  key={a.id}
-                  onClick={() => choose(a.label, a.id)}
+                  key={a.id ?? a.label}
+                  onClick={() => choose(a.label, a.next ?? a.id ?? 'fim')}
                   className="flex items-center justify-center gap-1.5 rounded-md border border-border bg-card px-2 py-2 text-[11px] font-medium transition-colors hover:border-primary/40 hover:bg-primary/[0.03]"
                 >
-                  <a.icon className={`h-3.5 w-3.5 ${a.color}`} strokeWidth={1.75} />
+                  {/* icon optional */}
                   <span className="truncate">{a.label}</span>
                 </button>
               ))}
             </div>
+            {conversationId && (
+              <div className="mt-3 flex items-center gap-2">
+                <input type="file" ref={fileInputRef} className="hidden" onChange={(e) => handleFileUpload(e.target.files?.[0])} />
+                <Button onClick={() => fileInputRef.current?.click()} size="sm">Enviar arquivo</Button>
+              </div>
+            )}
           </div>
         </section>
 

@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { AuthProvider } from "@/lib/auth/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
+import { FloatingChat } from "@/components/chat/FloatingChat";
 
 import appCss from "../styles.css?url";
 
@@ -121,6 +122,7 @@ function RootComponent() {
       <AuthProvider>
         <Outlet />
         <Toaster richColors closeButton position="top-right" />
+        <FloatingChat />
       </AuthProvider>
     </QueryClientProvider>
   );
