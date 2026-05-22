@@ -22,6 +22,11 @@ import {
   serviceRecordsMock,
   uploadedDocumentsMock,
   vehiclesMock,
+  sparklinesMock,
+  fleetMonthlyMock,
+  costBreakdownMock,
+  fleetDistributionMock,
+  operationalTimelineMock,
 } from "@/lib/mocks";
 import type {
   DamageRecord,
@@ -55,6 +60,15 @@ export const getFleetStatus = (): Promise<FleetStatus[]> => delay(fleetStatusMoc
 export const getInsights = (): Promise<Insight[]> => delay(insightsMock);
 export const getUploadedDocuments = (): Promise<UploadedDocument[]> => delay(uploadedDocumentsMock);
 export const getModuleDefinitions = (): Promise<ModuleDefinition[]> => delay(moduleDefinitionsMock);
+
+export const getAnalytics = () =>
+  delay({
+    sparklines: sparklinesMock,
+    fleetMonthly: fleetMonthlyMock,
+    costBreakdown: costBreakdownMock,
+    fleetDistribution: fleetDistributionMock,
+    operationalTimeline: operationalTimelineMock,
+  });
 
 export const findScheduleByChapaDateTime = async (
   chapa: string,

@@ -139,6 +139,54 @@ export const dashboardMetricsMock: DashboardMetric[] = [
   { key: "docs", label: "Documentos pendentes", value: 5, delta: -2 },
 ];
 
+/* Séries analíticas mockadas — substituir por GET /api/analytics no backend real */
+export const sparklinesMock: Record<string, number[]> = {
+  active: [4, 5, 4, 6, 5, 5, 6, 7, 6, 7, 6, 5],
+  stopped: [6, 5, 7, 6, 5, 5, 4, 5, 4, 3, 4, 4],
+  damages: [4, 6, 5, 7, 6, 8, 7, 9, 10, 9, 11, 12],
+  services: [3, 4, 5, 4, 6, 5, 6, 7, 6, 7, 8, 8],
+  cost: [12, 14, 13, 15, 14, 16, 15, 17, 16, 17, 18, 18.4],
+  docs: [9, 8, 8, 7, 6, 7, 6, 6, 5, 6, 5, 5],
+};
+
+export const fleetMonthlyMock = [
+  { month: "Jan", ativos: 38, parados: 6, avarias: 7 },
+  { month: "Fev", ativos: 40, parados: 5, avarias: 6 },
+  { month: "Mar", ativos: 39, parados: 7, avarias: 9 },
+  { month: "Abr", ativos: 41, parados: 4, avarias: 12 },
+  { month: "Mai", ativos: 42, parados: 4, avarias: 10 },
+  { month: "Jun", ativos: 43, parados: 3, avarias: 8 },
+];
+
+export const costBreakdownMock = [
+  { name: "Mecânica", value: 10680 },
+  { name: "Elétrica", value: 3120 },
+  { name: "Funilaria", value: 2350 },
+  { name: "Pneus", value: 1480 },
+  { name: "Outros", value: 790 },
+];
+
+export const fleetDistributionMock = [
+  { name: "Ativos", value: 41 },
+  { name: "Manutenção", value: 4 },
+  { name: "Aguardando peça", value: 2 },
+  { name: "Aguardando terceiro", value: 1 },
+  { name: "Inativos", value: 2 },
+];
+
+export const operationalTimelineMock = [
+  { hour: "04h", saidas: 2, retornos: 0 },
+  { hour: "06h", saidas: 14, retornos: 1 },
+  { hour: "08h", saidas: 9, retornos: 4 },
+  { hour: "10h", saidas: 5, retornos: 7 },
+  { hour: "12h", saidas: 6, retornos: 6 },
+  { hour: "14h", saidas: 11, retornos: 8 },
+  { hour: "16h", saidas: 7, retornos: 12 },
+  { hour: "18h", saidas: 4, retornos: 15 },
+  { hour: "20h", saidas: 2, retornos: 11 },
+  { hour: "22h", saidas: 0, retornos: 6 },
+];
+
 export const uploadedDocumentsMock: UploadedDocument[] = [
   { id: "u1", sector: "Manutenção", documentType: "Orçamento", fileName: "orcamento-eder-21052.pdf", uploadedAt: "29/04/2026", uploadedBy: "Supervisor Manutenção" },
   { id: "u2", sector: "RH", documentType: "Documento RH", fileName: "atestado-devair.pdf", uploadedAt: "28/04/2026", uploadedBy: "RH" },
