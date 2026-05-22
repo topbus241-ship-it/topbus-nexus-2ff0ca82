@@ -30,7 +30,8 @@ const resourceMap: Record<string, any> = {
 
 router.get('/:resource', authenticate, async (req, res) => {
   const { resource } = req.params;
-  const entry = resourceMap[resource];
+  const resourceKey = Array.isArray(resource) ? String(resource[0] ?? '') : String(resource ?? '');
+  const entry = (resourceMap as Record<string, any>)[resourceKey];
   if (!entry) return res.json([]);
   const list = await entry.findMany();
   res.json(list);
@@ -38,7 +39,8 @@ router.get('/:resource', authenticate, async (req, res) => {
 
 router.post('/:resource', authenticate, async (req, res) => {
   const { resource } = req.params;
-  const entry = resourceMap[resource];
+  const resourceKey = Array.isArray(resource) ? String(resource[0] ?? '') : String(resource ?? '');
+  const entry = (resourceMap as Record<string, any>)[resourceKey];
   if (!entry) return res.status(404).json({ error: 'resource_not_found' });
   const created = await entry.create(req.body);
   res.status(201).json(created);
@@ -46,7 +48,8 @@ router.post('/:resource', authenticate, async (req, res) => {
 
 router.put('/:resource/:id', authenticate, async (req, res) => {
   const { resource, id } = req.params;
-  const entry = resourceMap[resource];
+  const resourceKey = Array.isArray(resource) ? String(resource[0] ?? '') : String(resource ?? '');
+  const entry = (resourceMap as Record<string, any>)[resourceKey];
   if (!entry || !entry.update) return res.status(404).json({ error: 'update_not_supported' });
   const updated = await entry.update(id, req.body);
   res.json(updated);
