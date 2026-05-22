@@ -78,9 +78,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "TopBus OS: plataforma operacional modular para empresas de ônibus urbano. Gestão de frota, avarias, escala, terceirizados e insights." },
       { name: "author", content: "TopBus OS" },
       { property: "og:title", content: "TopBus OS — Plataforma Operacional" },
-      { property: "og:description", content: "Plataforma operacional modular para empresas de ônibus urbano." },
+      { property: "og:description", content: "TopBus OS: plataforma operacional modular para empresas de ônibus urbano. Gestão de frota, avarias, escala, terceirizados e insights." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "TopBus OS — Plataforma Operacional" },
+      { name: "twitter:description", content: "TopBus OS: plataforma operacional modular para empresas de ônibus urbano. Gestão de frota, avarias, escala, terceirizados e insights." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ZUNF20TevSZ6KF4GNh73bWdmpVx1/social-images/social-1779417869251-images.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ZUNF20TevSZ6KF4GNh73bWdmpVx1/social-images/social-1779417869251-images.webp" },
     ],
     links: [
       {
