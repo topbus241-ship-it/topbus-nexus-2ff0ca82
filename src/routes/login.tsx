@@ -54,7 +54,7 @@ function LoginPage() {
           </h2>
           <p className="text-sm text-sidebar-foreground/70 leading-relaxed">
             Frota, manutenção, escala, terceirizados, insights e governança de módulos —
-            preparado para integração com BI, IA local e Typebot.
+            preparado para integração com BI, IA local e Chat Otimizado.
           </p>
           <div className="grid grid-cols-3 gap-3 pt-2">
             {[
