@@ -44,7 +44,7 @@ export const NAV_ITEMS: NavItem[] = [
   { to: "/insights", label: "Insights / IA", icon: Sparkles, roles: ["master", "manutencao", "financeiro", "operacao"], group: "Gestão" },
 
   { to: "/criador-modulos", label: "Criador de Módulos", icon: Boxes, roles: ["master"], group: "Plataforma" },
-  { to: "/typebot", label: "Entrada Typebot", icon: MessageSquare, roles: "all", group: "Plataforma" },
+  { to: "/typebot", label: "Chat Otimizado", icon: MessageSquare, roles: "all", group: "Plataforma" },
   { to: "/configuracoes", label: "Configurações", icon: Settings, roles: "all", group: "Plataforma" },
 ];
 
