@@ -45,38 +45,17 @@ function EscalaPage() {
 
           <div className="space-y-3">
             <div>
-              <Label htmlFor="chapa" className="text-xs">
-                Chapa
-              </Label>
-              <Input
-                id="chapa"
-                value={chapa}
-                onChange={(e) => setChapa(e.target.value)}
-                placeholder="Ex.: 9718482"
-              />
+              <Label htmlFor="chapa" className="text-xs">Chapa</Label>
+              <Input id="chapa" value={chapa} onChange={(e) => setChapa(e.target.value)} placeholder="Ex.: 9718482" />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <Label htmlFor="date" className="text-xs">
-                  Data
-                </Label>
-                <Input
-                  id="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  placeholder="dd/mm/aaaa"
-                />
+                <Label htmlFor="date" className="text-xs">Data</Label>
+                <Input id="date" value={date} onChange={(e) => setDate(e.target.value)} placeholder="dd/mm/aaaa" />
               </div>
               <div>
-                <Label htmlFor="time" className="text-xs">
-                  Hora
-                </Label>
-                <Input
-                  id="time"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                  placeholder="hh:mm"
-                />
+                <Label htmlFor="time" className="text-xs">Hora</Label>
+                <Input id="time" value={time} onChange={(e) => setTime(e.target.value)} placeholder="hh:mm" />
               </div>
             </div>
             <Button onClick={onSearch} className="w-full gap-2" disabled={loading}>
@@ -85,8 +64,7 @@ function EscalaPage() {
           </div>
 
           <p className="mt-4 text-xs text-muted-foreground">
-            Dica: a busca por chapa elimina retrabalho operacional e padroniza o preenchimento de
-            avarias e serviços.
+            Dica: a busca por chapa elimina retrabalho operacional e padroniza o preenchimento de avarias e serviços.
           </p>
         </section>
 

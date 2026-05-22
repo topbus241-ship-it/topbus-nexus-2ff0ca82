@@ -37,9 +37,7 @@ export function UploadBox({
         }}
         className={cn(
           "flex w-full flex-col items-center justify-center gap-2 rounded-lg border border-dashed px-4 py-8 text-sm transition-colors",
-          hover
-            ? "border-primary bg-primary/5"
-            : "border-border bg-secondary/40 hover:bg-secondary/70",
+          hover ? "border-primary bg-primary/5" : "border-border bg-secondary/40 hover:bg-secondary/70",
         )}
       >
         <UploadCloud className="h-5 w-5 text-muted-foreground" strokeWidth={1.75} />

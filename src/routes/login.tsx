@@ -12,46 +12,14 @@ export const Route = createFileRoute("/login")({
 });
 
 const ROLE_OPTIONS: { role: UserRole; description: string; defaultName: string }[] = [
-  {
-    role: "master",
-    description: "Acesso total a todos os módulos, criação de novos módulos e governança.",
-    defaultName: "Administrador Master",
-  },
-  {
-    role: "manutencao",
-    description: "Avarias, serviços terceirizados, status de frota e prestadores.",
-    defaultName: "Gestor Manutenção",
-  },
-  {
-    role: "portaria",
-    description: "Registro de avarias e controle de entrada/saída de veículos.",
-    defaultName: "Operador Portaria",
-  },
-  {
-    role: "operacao",
-    description: "Escala operacional, linhas, rotas e motoristas.",
-    defaultName: "Supervisor Operação",
-  },
-  {
-    role: "financeiro",
-    description: "Serviços terceirizados, relatórios e custos consolidados.",
-    defaultName: "Analista Financeiro",
-  },
-  {
-    role: "rh",
-    description: "Cadastros, documentos e escalas de colaboradores.",
-    defaultName: "Gestor RH",
-  },
-  {
-    role: "abastecimento",
-    description: "Controle de litragem, cupons e custos por veículo.",
-    defaultName: "Operador Abastecimento",
-  },
-  {
-    role: "frota",
-    description: "Status da frota, veículos parados e disponibilidade.",
-    defaultName: "Gestor Frota",
-  },
+  { role: "master", description: "Acesso total a todos os módulos, criação de novos módulos e governança.", defaultName: "Administrador Master" },
+  { role: "manutencao", description: "Avarias, serviços terceirizados, status de frota e prestadores.", defaultName: "Gestor Manutenção" },
+  { role: "portaria", description: "Registro de avarias e controle de entrada/saída de veículos.", defaultName: "Operador Portaria" },
+  { role: "operacao", description: "Escala operacional, linhas, rotas e motoristas.", defaultName: "Supervisor Operação" },
+  { role: "financeiro", description: "Serviços terceirizados, relatórios e custos consolidados.", defaultName: "Analista Financeiro" },
+  { role: "rh", description: "Cadastros, documentos e escalas de colaboradores.", defaultName: "Gestor RH" },
+  { role: "abastecimento", description: "Controle de litragem, cupons e custos por veículo.", defaultName: "Operador Abastecimento" },
+  { role: "frota", description: "Status da frota, veículos parados e disponibilidade.", defaultName: "Gestor Frota" },
 ];
 
 function LoginPage() {
@@ -75,10 +43,8 @@ function LoginPage() {
             <img src={logo} alt="TopBus" className="h-10 w-10 object-contain" />
           </div>
           <div>
-            <div className="text-base font-semibold tracking-wide">AppBus OS</div>
-            <div className="text-[11px] uppercase tracking-[0.18em] text-sidebar-foreground/60">
-              Plataforma operacional
-            </div>
+            <div className="text-base font-semibold tracking-wide">TopBus OS</div>
+            <div className="text-[11px] uppercase tracking-[0.18em] text-sidebar-foreground/60">Plataforma operacional</div>
           </div>
         </div>
 
@@ -87,8 +53,8 @@ function LoginPage() {
             Visão executiva e controle operacional em uma única plataforma.
           </h2>
           <p className="text-sm text-sidebar-foreground/70 leading-relaxed">
-            Frota, manutenção, escala, terceirizados, insights e governança de módulos — preparado
-            para integração com BI, Inteligência Operacional e Chat Otimizado.
+            Frota, manutenção, escala, terceirizados, insights e governança de módulos —
+            preparado para integração com BI, IA local e Chat Otimizado.
           </p>
           <div className="grid grid-cols-3 gap-3 pt-2">
             {[
@@ -97,9 +63,7 @@ function LoginPage() {
               { k: "Acessos", v: "8 perfis" },
             ].map((s) => (
               <div key={s.k} className="rounded-lg bg-white/5 px-3 py-2 border border-white/5">
-                <div className="text-[10px] uppercase tracking-[0.14em] text-sidebar-foreground/55">
-                  {s.k}
-                </div>
+                <div className="text-[10px] uppercase tracking-[0.14em] text-sidebar-foreground/55">{s.k}</div>
                 <div className="mt-0.5 text-base font-semibold">{s.v}</div>
               </div>
             ))}
@@ -108,7 +72,7 @@ function LoginPage() {
 
         <div className="relative flex items-center gap-2 text-xs text-sidebar-foreground/55">
           <ShieldCheck className="h-3.5 w-3.5" strokeWidth={1.75} />
-          Protótipo frontend — autenticação JWT preparada para o núcleo técnico real.
+          Protótipo frontend — autenticação JWT preparada para o backend real.
         </div>
       </div>
 
@@ -120,20 +84,14 @@ function LoginPage() {
               <img src={logo} alt="TopBus" className="h-9 w-9 object-contain" />
             </div>
             <div>
-              <div className="text-sm font-semibold">AppBus OS</div>
-              <div className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-                Plataforma operacional
-              </div>
+              <div className="text-sm font-semibold">TopBus OS</div>
+              <div className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Plataforma operacional</div>
             </div>
           </div>
 
           <div className="mb-7">
-            <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground mb-2">
-              Acesso
-            </div>
-            <h1 className="text-[26px] sm:text-3xl font-semibold tracking-tight">
-              Entrar na plataforma
-            </h1>
+            <div className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground mb-2">Acesso</div>
+            <h1 className="text-[26px] sm:text-3xl font-semibold tracking-tight">Entrar na plataforma</h1>
             <p className="mt-2 text-sm text-muted-foreground">
               Selecione o perfil de acesso para visualizar a navegação correspondente.
             </p>
@@ -154,16 +112,9 @@ function LoginPage() {
               >
                 <div className="flex items-center justify-between">
                   <div className="text-sm font-medium">{ROLE_LABEL[opt.role]}</div>
-                  <span
-                    className={cn(
-                      "h-2 w-2 rounded-full",
-                      selected === opt.role ? "bg-primary" : "bg-border",
-                    )}
-                  />
+                  <span className={cn("h-2 w-2 rounded-full", selected === opt.role ? "bg-primary" : "bg-border")} />
                 </div>
-                <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">
-                  {opt.description}
-                </p>
+                <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">{opt.description}</p>
               </button>
             ))}
           </div>
@@ -175,15 +126,10 @@ function LoginPage() {
 
           <p className="mt-4 text-center text-[11px] text-muted-foreground">
             DEV -{" "}
-            <a
-              href="https://rodrigo.run"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground hover:text-primary underline-offset-4 hover:underline"
-            >
+            <a href="https://rodrigo.run" target="_blank" rel="noopener noreferrer" className="text-foreground hover:text-primary underline-offset-4 hover:underline">
               rodrigo.run
             </a>{" "}
-            © 2026 AppBus OS
+            © 2026 TopBus OS
           </p>
         </div>
       </div>

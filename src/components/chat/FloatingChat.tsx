@@ -1,15 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import {
-  MessageSquare,
-  X,
-  Bot,
-  RotateCcw,
-  ShieldAlert,
-  Wrench,
-  FileText,
-  Send,
-  Check,
-} from "lucide-react";
+import { MessageSquare, X, Bot, RotateCcw, ShieldAlert, Wrench, FileText, Send, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -253,11 +243,7 @@ export function FloatingChat() {
           "ring-4 ring-primary/15",
         )}
       >
-        {open ? (
-          <X className="h-5 w-5" strokeWidth={2} />
-        ) : (
-          <MessageSquare className="h-5 w-5" strokeWidth={2} />
-        )}
+        {open ? <X className="h-5 w-5" strokeWidth={2} /> : <MessageSquare className="h-5 w-5" strokeWidth={2} />}
         {!open && (
           <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
@@ -309,15 +295,9 @@ export function FloatingChat() {
           </div>
 
           {/* Messages */}
-          <div
-            ref={scrollRef}
-            className="flex-1 overflow-y-auto px-3 py-3 space-y-2.5 bg-secondary/30"
-          >
+          <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-3 space-y-2.5 bg-secondary/30">
             {messages.map((m) => (
-              <div
-                key={m.id}
-                className={cn("flex", m.from === "user" ? "justify-end" : "justify-start")}
-              >
+              <div key={m.id} className={cn("flex", m.from === "user" ? "justify-end" : "justify-start")}>
                 <div className={cn("max-w-[90%]", m.from === "bot" && "w-full")}>
                   <div
                     className={cn(

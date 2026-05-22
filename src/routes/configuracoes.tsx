@@ -16,23 +16,13 @@ function ConfiguracoesPage() {
   const { user } = useAuth();
   return (
     <AppLayout>
-      <PageHeader
-        breadcrumb="Plataforma"
-        title="Configurações"
-        description="Preferências da plataforma, integrações e segurança."
-      />
+      <PageHeader breadcrumb="Plataforma" title="Configurações" description="Preferências da plataforma, integrações e segurança." />
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card icon={Settings} title="Perfil">
-          <Row label="Nome">
-            <Input defaultValue={user?.name} />
-          </Row>
-          <Row label="Perfil de acesso">
-            <Input value={user ? ROLE_LABEL[user.role] : ""} readOnly />
-          </Row>
-          <Row label="E-mail">
-            <Input placeholder="usuario@topbus.com.br" />
-          </Row>
+          <Row label="Nome"><Input defaultValue={user?.name} /></Row>
+          <Row label="Perfil de acesso"><Input value={user ? ROLE_LABEL[user.role] : ""} readOnly /></Row>
+          <Row label="E-mail"><Input placeholder="usuario@topbus.com.br" /></Row>
         </Card>
 
         <Card icon={Bell} title="Notificações">
@@ -45,43 +35,25 @@ function ConfiguracoesPage() {
         <Card icon={Lock} title="Segurança">
           <Toggle label="Autenticação em dois fatores" hint="Recomendado para perfis Master" />
           <Toggle label="Sessão expira em 8h" defaultChecked />
-          <Button variant="outline" size="sm" className="w-fit">
-            Encerrar todas as sessões
-          </Button>
+          <Button variant="outline" size="sm" className="w-fit">Encerrar todas as sessões</Button>
         </Card>
 
         <Card icon={Database} title="Integrações">
-          <Toggle label="Núcleo Técnico NestJS + PostgreSQL" hint="Pronto para conexão" />
-          <Toggle
-            label="BI externo (Metabase / Power BI)"
-            hint="Ponto de Integração de leitura preparado"
-          />
+          <Toggle label="Backend NestJS + PostgreSQL" hint="Pronto para conexão" />
+          <Toggle label="BI externo (Metabase / Power BI)" hint="Endpoint de leitura preparado" />
           <Toggle label="Drive corporativo" hint="Para uploads centralizados" />
         </Card>
 
-        <Card icon={Cpu} title="Inteligência Operacional">
-          <Toggle
-            label="Habilitar Motor de Inteligência Operacional / Modelo de Inteligência Operacional"
-            hint="Roteamento da Inteligência Operacional"
-          />
-          <Row label="Ponto de Integração">
-            <Input placeholder="http://10.0.0.10:11434" />
-          </Row>
+        <Card icon={Cpu} title="IA local">
+          <Toggle label="Habilitar Ollama / Mistral" hint="Roteamento da IA local" />
+          <Row label="Endpoint"><Input placeholder="http://10.0.0.10:11434" /></Row>
         </Card>
       </div>
     </AppLayout>
   );
 }
 
-function Card({
-  icon: Icon,
-  title,
-  children,
-}: {
-  icon: unknown;
-  title: string;
-  children: React.ReactNode;
-}) {
+function Card({ icon: Icon, title, children }: { icon: any; title: string; children: React.ReactNode }) {
   return (
     <section className="rounded-xl border border-border bg-card">
       <div className="flex items-center gap-2 border-b border-border px-5 py-4">
@@ -102,15 +74,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
   );
 }
 
-function Toggle({
-  label,
-  hint,
-  defaultChecked,
-}: {
-  label: string;
-  hint?: string;
-  defaultChecked?: boolean;
-}) {
+function Toggle({ label, hint, defaultChecked }: { label: string; hint?: string; defaultChecked?: boolean }) {
   return (
     <div className="flex items-start justify-between gap-3 rounded-md border border-border bg-card px-3 py-2">
       <div>

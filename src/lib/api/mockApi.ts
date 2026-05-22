@@ -22,11 +22,6 @@ import {
   serviceRecordsMock,
   uploadedDocumentsMock,
   vehiclesMock,
-  sparklinesMock,
-  fleetMonthlyMock,
-  costBreakdownMock,
-  fleetDistributionMock,
-  operationalTimelineMock,
 } from "@/lib/mocks";
 import type {
   DamageRecord,
@@ -61,15 +56,6 @@ export const getInsights = (): Promise<Insight[]> => delay(insightsMock);
 export const getUploadedDocuments = (): Promise<UploadedDocument[]> => delay(uploadedDocumentsMock);
 export const getModuleDefinitions = (): Promise<ModuleDefinition[]> => delay(moduleDefinitionsMock);
 
-export const getAnalytics = () =>
-  delay({
-    sparklines: sparklinesMock,
-    fleetMonthly: fleetMonthlyMock,
-    costBreakdown: costBreakdownMock,
-    fleetDistribution: fleetDistributionMock,
-    operationalTimeline: operationalTimelineMock,
-  });
-
 export const findScheduleByChapaDateTime = async (
   chapa: string,
   date: string,
@@ -78,7 +64,10 @@ export const findScheduleByChapaDateTime = async (
   const list = await getSchedules();
   return (
     list.find(
-      (s) => s.chapa === chapa.trim() && s.date === date.trim() && s.time === time.trim(),
+      (s) =>
+        s.chapa === chapa.trim() &&
+        s.date === date.trim() &&
+        s.time === time.trim(),
     ) ?? null
   );
 };
@@ -109,7 +98,10 @@ export const uploadFile = async (
   return delay({ id: `up-${Date.now()}`, fileName: file.name });
 };
 
-export const generatePdf = async (resource: string, id: string): Promise<{ url: string }> => {
+export const generatePdf = async (
+  resource: string,
+  id: string,
+): Promise<{ url: string }> => {
   console.info("[mockApi.generatePdf]", resource, id);
   return delay({ url: `/mock-pdf/${resource}/${id}.pdf` });
 };

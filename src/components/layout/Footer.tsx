@@ -14,9 +14,7 @@ export function Footer() {
           </a>{" "}
           © 2026 TopBus OS - Todos os direitos reservados
         </div>
-        <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground/70">
-          Protótipo Frontend
-        </div>
+        <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground/70">Protótipo Frontend</div>
       </div>
     </footer>
   );

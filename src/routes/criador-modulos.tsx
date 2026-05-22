@@ -7,13 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { StatusBadge } from "@/components/common/StatusBadge";
 import { Boxes, Check, ShieldAlert, Send } from "lucide-react";
@@ -48,24 +42,9 @@ function CriadorModulosPage() {
 
   const [name, setName] = useState("Registro de Abastecimento");
   const [sector, setSector] = useState("abastecimento");
-  const [description, setDescription] = useState(
-    "Registro de litros, valor, posto e cupom por veículo, com assinatura.",
-  );
-  const [selected, setSelected] = useState<ModuleFieldType[]>([
-    "vehicle",
-    "driver",
-    "number",
-    "currency",
-    "text",
-    "photo",
-    "signature",
-  ]);
-  const [required, setRequired] = useState<ModuleFieldType[]>([
-    "vehicle",
-    "driver",
-    "number",
-    "currency",
-  ]);
+  const [description, setDescription] = useState("Registro de litros, valor, posto e cupom por veículo, com assinatura.");
+  const [selected, setSelected] = useState<ModuleFieldType[]>(["vehicle", "driver", "number", "currency", "text", "photo", "signature"]);
+  const [required, setRequired] = useState<ModuleFieldType[]>(["vehicle", "driver", "number", "currency"]);
 
   if (user?.role !== "master") {
     return (
@@ -75,9 +54,7 @@ function CriadorModulosPage() {
           <ShieldAlert className="h-5 w-5 text-destructive shrink-0" strokeWidth={1.75} />
           <div>
             <div className="text-sm font-semibold">Acesso restrito</div>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Apenas o perfil Master pode criar e publicar novos módulos.
-            </p>
+            <p className="mt-1 text-xs text-muted-foreground">Apenas o perfil Master pode criar e publicar novos módulos.</p>
           </div>
         </div>
       </AppLayout>
@@ -96,13 +73,7 @@ function CriadorModulosPage() {
         title="Criador de Módulos"
         description="Monte módulos personalizados por setor com campos, obrigatoriedades e permissões."
         actions={
-          <Button
-            size="sm"
-            className="gap-1.5"
-            onClick={() =>
-              toast.success("Módulo publicado", { description: `${name} disponível para o setor.` })
-            }
-          >
+          <Button size="sm" className="gap-1.5" onClick={() => toast.success("Módulo publicado", { description: `${name} disponível para o setor.` })}>
             <Send className="h-3.5 w-3.5" /> Publicar módulo
           </Button>
         }
@@ -119,9 +90,7 @@ function CriadorModulosPage() {
               <div>
                 <Label className="text-xs mb-1.5 block">Setor responsável</Label>
                 <Select value={sector} onValueChange={setSector}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="abastecimento">Abastecimento</SelectItem>
                     <SelectItem value="manutencao">Manutenção</SelectItem>
@@ -134,9 +103,7 @@ function CriadorModulosPage() {
               <div>
                 <Label className="text-xs mb-1.5 block">Permissões</Label>
                 <Select defaultValue="master+setor">
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="master">Apenas Master</SelectItem>
                     <SelectItem value="master+setor">Master + Setor</SelectItem>
@@ -147,11 +114,7 @@ function CriadorModulosPage() {
             </div>
             <div>
               <Label className="text-xs mb-1.5 block">Descrição</Label>
-              <Textarea
-                rows={3}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
+              <Textarea rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
             </div>
           </div>
 
@@ -165,10 +128,7 @@ function CriadorModulosPage() {
                 const on = selected.includes(f.type);
                 const req = required.includes(f.type);
                 return (
-                  <div
-                    key={f.type}
-                    className={`flex items-center justify-between rounded-md border px-3 py-2 ${on ? "border-primary/30 bg-primary/[0.03]" : "border-border bg-card"}`}
-                  >
+                  <div key={f.type} className={`flex items-center justify-between rounded-md border px-3 py-2 ${on ? "border-primary/30 bg-primary/[0.03]" : "border-border bg-card"}`}>
                     <label className="flex items-center gap-2 text-sm cursor-pointer">
                       <Checkbox checked={on} onCheckedChange={() => toggle(f.type)} />
                       {f.label}
@@ -196,9 +156,7 @@ function CriadorModulosPage() {
           </div>
           <div className="p-5 space-y-4">
             <div>
-              <div className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-                Módulo
-              </div>
+              <div className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Módulo</div>
               <div className="text-base font-semibold">{name}</div>
               <p className="text-xs text-muted-foreground mt-1">{description}</p>
             </div>
@@ -217,16 +175,13 @@ function CriadorModulosPage() {
                 );
               })}
               {selected.length === 0 && (
-                <div className="text-xs text-muted-foreground">
-                  Selecione campos à esquerda para visualizar o módulo.
-                </div>
+                <div className="text-xs text-muted-foreground">Selecione campos à esquerda para visualizar o módulo.</div>
               )}
             </div>
             <div className="rounded-md border border-success/30 bg-success/5 p-3 flex items-start gap-2">
               <Check className="h-4 w-4 text-success mt-0.5" strokeWidth={1.75} />
               <div className="text-xs">
-                Pronto para publicação. Após publicar, o módulo aparece no setor selecionado e
-                respeita as permissões definidas.
+                Pronto para publicação. Após publicar, o módulo aparece no setor selecionado e respeita as permissões definidas.
               </div>
             </div>
           </div>
@@ -251,21 +206,11 @@ function PreviewField({ type }: { type: ModuleFieldType }) {
     case "photo":
     case "file":
     case "signature":
-      return (
-        <div className="rounded-md border border-dashed border-border bg-secondary/30 px-3 py-4 text-center text-xs text-muted-foreground">
-          {type === "signature"
-            ? "Assinatura simulada"
-            : type === "photo"
-              ? "Anexar foto"
-              : "Anexar arquivo"}
-        </div>
-      );
+      return <div className="rounded-md border border-dashed border-border bg-secondary/30 px-3 py-4 text-center text-xs text-muted-foreground">{type === "signature" ? "Assinatura simulada" : type === "photo" ? "Anexar foto" : "Anexar arquivo"}</div>;
     case "status":
       return (
         <Select defaultValue="registrado">
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
+          <SelectTrigger><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="registrado">Registrado</SelectItem>
             <SelectItem value="andamento">Em andamento</SelectItem>

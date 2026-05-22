@@ -28,16 +28,12 @@ function InsightsPage() {
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-semibold">Inteligência Operacional preparada</h2>
+              <h2 className="text-sm font-semibold">IA local preparada</h2>
               <StatusBadge label="Roadmap" tone="info" />
             </div>
             <p className="mt-1 text-xs text-muted-foreground leading-relaxed max-w-2xl">
-              Integração futura com{" "}
-              <strong className="text-foreground">
-                Motor de Inteligência Operacional / Modelo de Inteligência Operacional
-              </strong>{" "}
-              rodando em rede local. Os insights abaixo são gerados a partir dos registros
-              operacionais consolidados (ambiente de demonstração nesta versão).
+              Integração futura com <strong className="text-foreground">Ollama / Mistral</strong> rodando em rede local.
+              Os insights abaixo são gerados a partir dos registros operacionais consolidados (mock nesta versão).
             </p>
           </div>
         </div>
@@ -49,21 +45,11 @@ function InsightsPage() {
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-primary" strokeWidth={1.75} />
-                <span className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
-                  {i.category}
-                </span>
+                <span className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">{i.category}</span>
               </div>
               <StatusBadge
-                label={
-                  i.severity === "critico"
-                    ? "Crítico"
-                    : i.severity === "alerta"
-                      ? "Alerta"
-                      : "Informativo"
-                }
-                tone={
-                  i.severity === "critico" ? "danger" : i.severity === "alerta" ? "warning" : "info"
-                }
+                label={i.severity === "critico" ? "Crítico" : i.severity === "alerta" ? "Alerta" : "Informativo"}
+                tone={i.severity === "critico" ? "danger" : i.severity === "alerta" ? "warning" : "info"}
               />
             </div>
             <h3 className="mt-3 text-sm font-semibold leading-snug">{i.title}</h3>
@@ -79,18 +65,13 @@ function InsightsPage() {
         <div className="min-w-0 flex-1">
           <div className="text-sm font-semibold">Copiloto analítico</div>
           <p className="text-xs text-muted-foreground mt-1 max-w-2xl">
-            Em breve, perguntas em linguagem natural sobre frota, custos e operação. Estrutura
-            pronta para conectar ao Ponto de Integração da Inteligência Operacional quando o núcleo
-            técnico estiver disponível.
+            Em breve, perguntas em linguagem natural sobre frota, custos e operação. Estrutura pronta para
+            conectar ao endpoint da IA local quando o backend estiver disponível.
           </p>
         </div>
         <div className="hidden sm:flex gap-1.5">
-          <span className="rounded-md border border-border bg-secondary/60 px-2 py-1 text-[11px]">
-            Motor de Inteligência Operacional
-          </span>
-          <span className="rounded-md border border-border bg-secondary/60 px-2 py-1 text-[11px]">
-            Modelo de Inteligência Operacional
-          </span>
+          <span className="rounded-md border border-border bg-secondary/60 px-2 py-1 text-[11px]">Ollama</span>
+          <span className="rounded-md border border-border bg-secondary/60 px-2 py-1 text-[11px]">Mistral</span>
         </div>
       </div>
     </AppLayout>

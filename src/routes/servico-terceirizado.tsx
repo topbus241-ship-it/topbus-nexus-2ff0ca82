@@ -11,13 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getServiceRecords, getProviders, getVehicles } from "@/lib/api/mockApi";
 import { Plus, Save, Wrench } from "lucide-react";
 import { toast } from "sonner";
@@ -52,53 +46,28 @@ function ServicoTerceirizadoPage() {
           className="space-y-4 mb-8"
           onSubmit={(e) => {
             e.preventDefault();
-            toast.success("Registro de serviço salvo", {
-              description: "O lançamento será conferido pelo financeiro.",
-            });
+            toast.success("Registro de serviço salvo", { description: "O lançamento será conferido pelo financeiro." });
             setOpen(false);
           }}
         >
-          <FormSection
-            title="Identificação"
-            description="Veículo, prestador e responsável pelo serviço."
-          >
+          <FormSection title="Identificação" description="Veículo, prestador e responsável pelo serviço.">
             <div className="grid gap-3 sm:grid-cols-2">
               <Field label="Veículo">
                 <Select defaultValue="21052">
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {vehicles.map((v) => (
-                      <SelectItem key={v.id} value={v.number}>
-                        {v.number}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>{vehicles.map((v) => <SelectItem key={v.id} value={v.number}>{v.number}</SelectItem>)}</SelectContent>
                 </Select>
               </Field>
               <Field label="Prestador">
                 <Select defaultValue="EDER">
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {providers.map((p) => (
-                      <SelectItem key={p.id} value={p.name}>
-                        {p.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>{providers.map((p) => <SelectItem key={p.id} value={p.name}>{p.name}</SelectItem>)}</SelectContent>
                 </Select>
               </Field>
-              <Field label="Executor">
-                <Input defaultValue="EDER" />
-              </Field>
+              <Field label="Executor"><Input defaultValue="EDER" /></Field>
               <Field label="Tipo de serviço">
                 <Select defaultValue="Mecânica">
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="Mecânica">Mecânica</SelectItem>
                     <SelectItem value="Elétrica">Elétrica</SelectItem>
@@ -111,26 +80,15 @@ function ServicoTerceirizadoPage() {
           </FormSection>
 
           <FormSection title="Serviço executado" description="Descrição detalhada e valor cobrado.">
-            <Field label="Serviço realizado">
-              <Input defaultValue="TROCA DA CAIXA DE MARCHA" />
-            </Field>
-            <Field label="Descrição">
-              <Textarea placeholder="Detalhes técnicos, peças envolvidas, observações." rows={3} />
-            </Field>
+            <Field label="Serviço realizado"><Input defaultValue="TROCA DA CAIXA DE MARCHA" /></Field>
+            <Field label="Descrição"><Textarea placeholder="Detalhes técnicos, peças envolvidas, observações." rows={3} /></Field>
             <div className="grid gap-3 sm:grid-cols-2">
-              <Field label="Valor (R$)">
-                <Input type="number" defaultValue="4800" />
-              </Field>
-              <Field label="Responsável pela autorização">
-                <Input defaultValue="Supervisor Manutenção" />
-              </Field>
+              <Field label="Valor (R$)"><Input type="number" defaultValue="4800" /></Field>
+              <Field label="Responsável pela autorização"><Input defaultValue="Supervisor Manutenção" /></Field>
             </div>
           </FormSection>
 
-          <FormSection
-            title="Evidências"
-            description="Fotos antes/depois e documentos comprobatórios."
-          >
+          <FormSection title="Evidências" description="Fotos antes/depois e documentos comprobatórios.">
             <div className="grid gap-3 sm:grid-cols-2">
               <div>
                 <Label className="text-xs mb-1.5 block">Fotos antes</Label>
@@ -143,15 +101,10 @@ function ServicoTerceirizadoPage() {
             </div>
           </FormSection>
 
-          <FormSection
-            title="Assinatura e conferência"
-            description="Confirme com a assinatura do responsável."
-          >
+          <FormSection title="Assinatura e conferência" description="Confirme com a assinatura do responsável.">
             <SignatureBox />
             <div className="flex justify-end">
-              <Button type="submit" className="gap-2">
-                <Save className="h-4 w-4" /> Salvar registro
-              </Button>
+              <Button type="submit" className="gap-2"><Save className="h-4 w-4" /> Salvar registro</Button>
             </div>
           </FormSection>
         </form>
@@ -181,28 +134,7 @@ function ServicoTerceirizadoPage() {
                   <td className="px-5 py-3 text-muted-foreground">{r.providerName}</td>
                   <td className="px-5 py-3">{r.serviceDone}</td>
                   <td className="px-5 py-3 tabular-nums font-semibold">{brl(r.value)}</td>
-                  <td className="px-5 py-3">
-                    <StatusBadge
-                      label={
-                        r.status === "registrado"
-                          ? "Registrado"
-                          : r.status === "em_andamento"
-                            ? "Em andamento"
-                            : r.status === "concluido"
-                              ? "Concluído"
-                              : "Aguardando"
-                      }
-                      tone={
-                        r.status === "registrado"
-                          ? "info"
-                          : r.status === "em_andamento"
-                            ? "warning"
-                            : r.status === "concluido"
-                              ? "success"
-                              : "muted"
-                      }
-                    />
-                  </td>
+                  <td className="px-5 py-3"><StatusBadge label={r.status === "registrado" ? "Registrado" : r.status === "em_andamento" ? "Em andamento" : r.status === "concluido" ? "Concluído" : "Aguardando"} tone={r.status === "registrado" ? "info" : r.status === "em_andamento" ? "warning" : r.status === "concluido" ? "success" : "muted"} /></td>
                   <td className="px-5 py-3 text-muted-foreground">{r.createdAt}</td>
                 </tr>
               ))}
@@ -213,29 +145,8 @@ function ServicoTerceirizadoPage() {
           {records.map((r) => (
             <div key={r.id} className="px-4 py-3.5">
               <div className="flex items-center justify-between">
-                <div className="font-medium">
-                  {r.vehicleNumber} • {r.serviceType}
-                </div>
-                <StatusBadge
-                  label={
-                    r.status === "registrado"
-                      ? "Registrado"
-                      : r.status === "em_andamento"
-                        ? "Em andamento"
-                        : r.status === "concluido"
-                          ? "Concluído"
-                          : "Aguardando"
-                  }
-                  tone={
-                    r.status === "registrado"
-                      ? "info"
-                      : r.status === "em_andamento"
-                        ? "warning"
-                        : r.status === "concluido"
-                          ? "success"
-                          : "muted"
-                  }
-                />
+                <div className="font-medium">{r.vehicleNumber} • {r.serviceType}</div>
+                <StatusBadge label={r.status === "registrado" ? "Registrado" : r.status === "em_andamento" ? "Em andamento" : r.status === "concluido" ? "Concluído" : "Aguardando"} tone={r.status === "registrado" ? "info" : r.status === "em_andamento" ? "warning" : r.status === "concluido" ? "success" : "muted"} />
               </div>
               <div className="mt-1 text-sm">{r.serviceDone}</div>
               <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">

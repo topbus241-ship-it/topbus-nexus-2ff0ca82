@@ -54,45 +54,24 @@ function AvariaPage() {
             setOpen(false);
           }}
         >
-          <FormSection
-            title="Identificação"
-            description="Veículo, motorista e responsável pelo registro."
-          >
+          <FormSection title="Identificação" description="Veículo, motorista e responsável pelo registro.">
             <div className="grid gap-3 sm:grid-cols-2">
-              <Field label="Veículo">
-                <Input defaultValue="97021" />
-              </Field>
-              <Field label="Motorista">
-                <Input defaultValue="DEVAIR MENDES DE SOUSA" />
-              </Field>
-              <Field label="Chapa">
-                <Input defaultValue="9718482" />
-              </Field>
-              <Field label="Apontador / Portaria">
-                <Input defaultValue="Portaria - Turno 1" />
-              </Field>
+              <Field label="Veículo"><Input defaultValue="97021" /></Field>
+              <Field label="Motorista"><Input defaultValue="DEVAIR MENDES DE SOUSA" /></Field>
+              <Field label="Chapa"><Input defaultValue="9718482" /></Field>
+              <Field label="Apontador / Portaria"><Input defaultValue="Portaria - Turno 1" /></Field>
             </div>
           </FormSection>
 
           <FormSection title="Dano" description="Detalhe da avaria e versões coletadas.">
             <div className="grid gap-3 sm:grid-cols-2">
-              <Field label="Tipo de dano">
-                <Input defaultValue="Vidro" />
-              </Field>
-              <Field label="Parte afetada">
-                <Input defaultValue="Letreiro frontal" />
-              </Field>
+              <Field label="Tipo de dano"><Input defaultValue="Vidro" /></Field>
+              <Field label="Parte afetada"><Input defaultValue="Letreiro frontal" /></Field>
             </div>
-            <Field label="Descrição da avaria">
-              <Textarea defaultValue="VIDRO DO LETREIRO QUEBRADO" rows={2} />
-            </Field>
+            <Field label="Descrição da avaria"><Textarea defaultValue="VIDRO DO LETREIRO QUEBRADO" rows={2} /></Field>
             <div className="grid gap-3 sm:grid-cols-2">
-              <Field label="Versão do motorista">
-                <Textarea rows={2} placeholder="Como o motorista descreve o ocorrido" />
-              </Field>
-              <Field label="Versão da portaria">
-                <Textarea rows={2} placeholder="Observações da portaria/manutenção" />
-              </Field>
+              <Field label="Versão do motorista"><Textarea rows={2} placeholder="Como o motorista descreve o ocorrido" /></Field>
+              <Field label="Versão da portaria"><Textarea rows={2} placeholder="Observações da portaria/manutenção" /></Field>
             </div>
             <div>
               <Label className="text-xs mb-1.5 block">Fotos</Label>
@@ -100,38 +79,15 @@ function AvariaPage() {
             </div>
           </FormSection>
 
-          <FormSection
-            title="Custo"
-            description="Cálculo automático com base nos itens informados."
-          >
+          <FormSection title="Custo" description="Cálculo automático com base nos itens informados.">
             <div className="grid gap-3 sm:grid-cols-2">
-              <Field label="Item / Peça">
-                <Input defaultValue="Vidro do letreiro" />
-              </Field>
-              <Field label="Quantidade">
-                <Input type="number" value={qty} onChange={(e) => setQty(+e.target.value || 0)} />
-              </Field>
-              <Field label="Valor unitário (R$)">
-                <Input type="number" value={unit} onChange={(e) => setUnit(+e.target.value || 0)} />
-              </Field>
-              <Field label="Mão de obra (R$)">
-                <Input
-                  type="number"
-                  value={labor}
-                  onChange={(e) => setLabor(+e.target.value || 0)}
-                />
-              </Field>
-              <Field label="Outros valores (R$)">
-                <Input
-                  type="number"
-                  value={other}
-                  onChange={(e) => setOther(+e.target.value || 0)}
-                />
-              </Field>
+              <Field label="Item / Peça"><Input defaultValue="Vidro do letreiro" /></Field>
+              <Field label="Quantidade"><Input type="number" value={qty} onChange={(e) => setQty(+e.target.value || 0)} /></Field>
+              <Field label="Valor unitário (R$)"><Input type="number" value={unit} onChange={(e) => setUnit(+e.target.value || 0)} /></Field>
+              <Field label="Mão de obra (R$)"><Input type="number" value={labor} onChange={(e) => setLabor(+e.target.value || 0)} /></Field>
+              <Field label="Outros valores (R$)"><Input type="number" value={other} onChange={(e) => setOther(+e.target.value || 0)} /></Field>
               <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 flex flex-col justify-center">
-                <div className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
-                  Valor total
-                </div>
+                <div className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">Valor total</div>
                 <div className="text-xl font-semibold tabular-nums text-primary">{brl(total)}</div>
               </div>
             </div>
@@ -140,9 +96,7 @@ function AvariaPage() {
           <FormSection title="Assinatura" description="Confirme com a assinatura do responsável.">
             <SignatureBox />
             <div className="flex justify-end">
-              <Button type="submit" className="gap-2">
-                <Save className="h-4 w-4" /> Salvar avaria
-              </Button>
+              <Button type="submit" className="gap-2"><Save className="h-4 w-4" /> Salvar avaria</Button>
             </div>
           </FormSection>
         </form>
@@ -160,41 +114,19 @@ function AvariaPage() {
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-semibold">{r.vehicleNumber}</span>
-                    <span className="text-xs text-muted-foreground">
-                      • {r.driverName} (chapa {r.chapa})
-                    </span>
+                    <span className="text-xs text-muted-foreground">• {r.driverName} (chapa {r.chapa})</span>
                   </div>
                   <div className="mt-1 text-sm">{r.description}</div>
-                  <div className="mt-1 text-xs text-muted-foreground">
-                    {r.createdAt} • {r.reporter}
-                  </div>
+                  <div className="mt-1 text-xs text-muted-foreground">{r.createdAt} • {r.reporter}</div>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="text-right">
-                    <div className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
-                      Total
-                    </div>
+                    <div className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">Total</div>
                     <div className="text-base font-semibold tabular-nums">{brl(r.totalValue)}</div>
                   </div>
                   <StatusBadge
-                    label={
-                      r.status === "registrada"
-                        ? "Registrada"
-                        : r.status === "orcamento"
-                          ? "Em orçamento"
-                          : r.status === "aprovada"
-                            ? "Aprovada"
-                            : "Concluída"
-                    }
-                    tone={
-                      r.status === "registrada"
-                        ? "info"
-                        : r.status === "orcamento"
-                          ? "warning"
-                          : r.status === "aprovada"
-                            ? "success"
-                            : "muted"
-                    }
+                    label={r.status === "registrada" ? "Registrada" : r.status === "orcamento" ? "Em orçamento" : r.status === "aprovada" ? "Aprovada" : "Concluída"}
+                    tone={r.status === "registrada" ? "info" : r.status === "orcamento" ? "warning" : r.status === "aprovada" ? "success" : "muted"}
                   />
                 </div>
               </div>

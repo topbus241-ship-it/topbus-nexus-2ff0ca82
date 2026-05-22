@@ -20,11 +20,7 @@ function LinhasRotasPage() {
         breadcrumb="Operação"
         title="Linhas e Rotas"
         description="Linhas urbanas, rotas atendidas e veículos vinculados."
-        actions={
-          <Button size="sm" className="gap-1.5">
-            <Plus className="h-3.5 w-3.5" /> Nova linha
-          </Button>
-        }
+        actions={<Button size="sm" className="gap-1.5"><Plus className="h-3.5 w-3.5" /> Nova linha</Button>}
       />
 
       <div className="grid gap-3 sm:grid-cols-2">
@@ -36,29 +32,17 @@ function LinhasRotasPage() {
                   <Map className="h-4 w-4 text-primary" strokeWidth={1.75} />
                 </div>
                 <div>
-                  <div className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-                    Linha
-                  </div>
+                  <div className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Linha</div>
                   <div className="text-base font-semibold tabular-nums">{r.line}</div>
                 </div>
               </div>
-              <StatusBadge
-                label={r.status === "ativa" ? "Ativa" : "Suspensa"}
-                tone={r.status === "ativa" ? "success" : "danger"}
-              />
+              <StatusBadge label={r.status === "ativa" ? "Ativa" : "Suspensa"} tone={r.status === "ativa" ? "success" : "danger"} />
             </div>
             <div className="mt-4 text-sm font-medium">{r.name}</div>
             <div className="mt-3 flex flex-wrap gap-1.5">
-              {r.vehicles.length === 0 && (
-                <div className="text-xs text-muted-foreground">Sem veículos vinculados</div>
-              )}
+              {r.vehicles.length === 0 && <div className="text-xs text-muted-foreground">Sem veículos vinculados</div>}
               {r.vehicles.map((v) => (
-                <span
-                  key={v}
-                  className="rounded-md border border-border bg-secondary/60 px-2 py-0.5 text-[11px] font-medium tabular-nums"
-                >
-                  {v}
-                </span>
+                <span key={v} className="rounded-md border border-border bg-secondary/60 px-2 py-0.5 text-[11px] font-medium tabular-nums">{v}</span>
               ))}
             </div>
           </div>

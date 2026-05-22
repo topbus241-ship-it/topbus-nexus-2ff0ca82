@@ -41,25 +41,13 @@ function VeiculosPage() {
         breadcrumb="Operação"
         title="Veículos"
         description="Frota cadastrada, com status operacional e observações de manutenção."
-        actions={
-          <Button size="sm" className="gap-1.5">
-            <Bus className="h-3.5 w-3.5" /> Novo veículo
-          </Button>
-        }
+        actions={<Button size="sm" className="gap-1.5"><Bus className="h-3.5 w-3.5" /> Novo veículo</Button>}
       />
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative w-full max-w-sm">
-          <Search
-            className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-            strokeWidth={1.75}
-          />
-          <Input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Buscar por número do veículo…"
-            className="pl-9"
-          />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" strokeWidth={1.75} />
+          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar por número do veículo…" className="pl-9" />
         </div>
         <div className="flex flex-wrap gap-1.5">
           {FILTERS.map((f) => (
@@ -67,9 +55,7 @@ function VeiculosPage() {
               key={f.value}
               onClick={() => setFilter(f.value)}
               className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
-                filter === f.value
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border bg-card hover:bg-secondary"
+                filter === f.value ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card hover:bg-secondary"
               }`}
             >
               {f.label}
@@ -96,13 +82,9 @@ function VeiculosPage() {
                 <td className="px-5 py-3 font-medium">{v.number}</td>
                 <td className="px-5 py-3 text-muted-foreground">{v.type}</td>
                 <td className="px-5 py-3 text-muted-foreground">{v.note ?? "—"}</td>
-                <td className="px-5 py-3">
-                  <VehicleStatusBadge status={v.status} />
-                </td>
+                <td className="px-5 py-3"><VehicleStatusBadge status={v.status} /></td>
                 <td className="px-5 py-3 text-right">
-                  <Button variant="ghost" size="sm" className="gap-1.5">
-                    <Eye className="h-3.5 w-3.5" /> Detalhes
-                  </Button>
+                  <Button variant="ghost" size="sm" className="gap-1.5"><Eye className="h-3.5 w-3.5" /> Detalhes</Button>
                 </td>
               </tr>
             ))}
@@ -120,9 +102,7 @@ function VeiculosPage() {
             </div>
             <div className="mt-1 text-xs text-muted-foreground">{v.type}</div>
             {v.note && <div className="mt-2 text-sm">{v.note}</div>}
-            <Button variant="outline" size="sm" className="mt-3 w-full gap-1.5">
-              <Eye className="h-3.5 w-3.5" /> Ver detalhes
-            </Button>
+            <Button variant="outline" size="sm" className="mt-3 w-full gap-1.5"><Eye className="h-3.5 w-3.5" /> Ver detalhes</Button>
           </div>
         ))}
       </div>

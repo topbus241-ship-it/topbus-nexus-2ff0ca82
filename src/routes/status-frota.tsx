@@ -16,13 +16,7 @@ function StatusFrotaPage() {
   const { data: fleet = [] } = useQuery({ queryKey: ["fleet"], queryFn: getFleetStatus });
 
   const active = vehicles.filter((v) => v.status === "ativo").length;
-  const stopped = vehicles.filter(
-    (v) =>
-      v.status === "parado" ||
-      v.status === "manutencao" ||
-      v.status === "aguardando_peca" ||
-      v.status === "aguardando_terceiro",
-  ).length;
+  const stopped = vehicles.filter((v) => v.status === "parado" || v.status === "manutencao" || v.status === "aguardando_peca" || v.status === "aguardando_terceiro").length;
   const inMaint = vehicles.filter((v) => v.status === "manutencao").length;
   const waitingPart = vehicles.filter((v) => v.status === "aguardando_peca").length;
 
@@ -60,25 +54,15 @@ function StatusFrotaPage() {
               {fleet.map((f) => (
                 <tr key={f.vehicleNumber} className="hover:bg-secondary/40">
                   <td className="px-5 py-3 font-medium tabular-nums">{f.vehicleNumber}</td>
-                  <td className="px-5 py-3">
-                    <VehicleStatusBadge status={f.status} />
-                  </td>
+                  <td className="px-5 py-3"><VehicleStatusBadge status={f.status} /></td>
                   <td className="px-5 py-3">{f.reason}</td>
                   <td className="px-5 py-3 text-muted-foreground">{f.responsibleSector}</td>
                   <td className="px-5 py-3 text-muted-foreground">{f.stoppedAt}</td>
                   <td className="px-5 py-3 text-muted-foreground">{f.expectedRelease}</td>
                   <td className="px-5 py-3">
                     <StatusBadge
-                      label={
-                        f.priority === "alta" ? "Alta" : f.priority === "media" ? "Média" : "Baixa"
-                      }
-                      tone={
-                        f.priority === "alta"
-                          ? "danger"
-                          : f.priority === "media"
-                            ? "warning"
-                            : "muted"
-                      }
+                      label={f.priority === "alta" ? "Alta" : f.priority === "media" ? "Média" : "Baixa"}
+                      tone={f.priority === "alta" ? "danger" : f.priority === "media" ? "warning" : "muted"}
                     />
                   </td>
                 </tr>
@@ -95,18 +79,10 @@ function StatusFrotaPage() {
               </div>
               <div className="mt-1 text-sm">{f.reason}</div>
               <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
-                <div>
-                  Setor: <span className="text-foreground">{f.responsibleSector}</span>
-                </div>
-                <div>
-                  Prioridade: <span className="text-foreground">{f.priority}</span>
-                </div>
-                <div>
-                  Parada: <span className="text-foreground">{f.stoppedAt}</span>
-                </div>
-                <div>
-                  Previsão: <span className="text-foreground">{f.expectedRelease}</span>
-                </div>
+                <div>Setor: <span className="text-foreground">{f.responsibleSector}</span></div>
+                <div>Prioridade: <span className="text-foreground">{f.priority}</span></div>
+                <div>Parada: <span className="text-foreground">{f.stoppedAt}</span></div>
+                <div>Previsão: <span className="text-foreground">{f.expectedRelease}</span></div>
               </div>
             </div>
           ))}

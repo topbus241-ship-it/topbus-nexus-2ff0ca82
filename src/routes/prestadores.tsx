@@ -22,11 +22,7 @@ function PrestadoresPage() {
         breadcrumb="Manutenção"
         title="Prestadores"
         description="Prestadores externos vinculados a serviços terceirizados."
-        actions={
-          <Button size="sm" className="gap-1.5">
-            <Plus className="h-3.5 w-3.5" /> Novo prestador
-          </Button>
-        }
+        actions={<Button size="sm" className="gap-1.5"><Plus className="h-3.5 w-3.5" /> Novo prestador</Button>}
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -37,25 +33,16 @@ function PrestadoresPage() {
                 <div className="text-sm font-semibold">{p.name}</div>
                 <div className="text-xs text-muted-foreground">{p.serviceType}</div>
               </div>
-              <StatusBadge
-                label={p.status === "ativo" ? "Ativo" : "Inativo"}
-                tone={p.status === "ativo" ? "success" : "muted"}
-              />
+              <StatusBadge label={p.status === "ativo" ? "Ativo" : "Inativo"} tone={p.status === "ativo" ? "success" : "muted"} />
             </div>
             <div className="mt-4 grid grid-cols-2 gap-4 border-t border-border pt-4">
               <div>
-                <div className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
-                  Serviços
-                </div>
+                <div className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">Serviços</div>
                 <div className="text-base font-semibold tabular-nums">{p.servicesCount}</div>
               </div>
               <div>
-                <div className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
-                  Acumulado
-                </div>
-                <div className="text-base font-semibold tabular-nums">
-                  {brl(p.accumulatedValue)}
-                </div>
+                <div className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">Acumulado</div>
+                <div className="text-base font-semibold tabular-nums">{brl(p.accumulatedValue)}</div>
               </div>
             </div>
           </div>
