@@ -9,12 +9,96 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VeiculosRouteImport } from './routes/veiculos'
+import { Route as TypebotRouteImport } from './routes/typebot'
+import { Route as StatusFrotaRouteImport } from './routes/status-frota'
+import { Route as SetoresRouteImport } from './routes/setores'
+import { Route as ServicoTerceirizadoRouteImport } from './routes/servico-terceirizado'
+import { Route as RelatoriosRouteImport } from './routes/relatorios'
+import { Route as PrestadoresRouteImport } from './routes/prestadores'
+import { Route as MotoristasRouteImport } from './routes/motoristas'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as LinhasRotasRouteImport } from './routes/linhas-rotas'
+import { Route as InsightsRouteImport } from './routes/insights'
+import { Route as EscalaRouteImport } from './routes/escala'
+import { Route as CriadorModulosRouteImport } from './routes/criador-modulos'
+import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
+import { Route as AvariaRouteImport } from './routes/avaria'
 import { Route as IndexRouteImport } from './routes/index'
 
+const VeiculosRoute = VeiculosRouteImport.update({
+  id: '/veiculos',
+  path: '/veiculos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TypebotRoute = TypebotRouteImport.update({
+  id: '/typebot',
+  path: '/typebot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatusFrotaRoute = StatusFrotaRouteImport.update({
+  id: '/status-frota',
+  path: '/status-frota',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SetoresRoute = SetoresRouteImport.update({
+  id: '/setores',
+  path: '/setores',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicoTerceirizadoRoute = ServicoTerceirizadoRouteImport.update({
+  id: '/servico-terceirizado',
+  path: '/servico-terceirizado',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RelatoriosRoute = RelatoriosRouteImport.update({
+  id: '/relatorios',
+  path: '/relatorios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrestadoresRoute = PrestadoresRouteImport.update({
+  id: '/prestadores',
+  path: '/prestadores',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MotoristasRoute = MotoristasRouteImport.update({
+  id: '/motoristas',
+  path: '/motoristas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LinhasRotasRoute = LinhasRotasRouteImport.update({
+  id: '/linhas-rotas',
+  path: '/linhas-rotas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EscalaRoute = EscalaRouteImport.update({
+  id: '/escala',
+  path: '/escala',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CriadorModulosRoute = CriadorModulosRouteImport.update({
+  id: '/criador-modulos',
+  path: '/criador-modulos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AvariaRoute = AvariaRouteImport.update({
+  id: '/avaria',
+  path: '/avaria',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,37 +109,240 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/avaria': typeof AvariaRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/criador-modulos': typeof CriadorModulosRoute
+  '/escala': typeof EscalaRoute
+  '/insights': typeof InsightsRoute
+  '/linhas-rotas': typeof LinhasRotasRoute
   '/login': typeof LoginRoute
+  '/motoristas': typeof MotoristasRoute
+  '/prestadores': typeof PrestadoresRoute
+  '/relatorios': typeof RelatoriosRoute
+  '/servico-terceirizado': typeof ServicoTerceirizadoRoute
+  '/setores': typeof SetoresRoute
+  '/status-frota': typeof StatusFrotaRoute
+  '/typebot': typeof TypebotRoute
+  '/veiculos': typeof VeiculosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/avaria': typeof AvariaRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/criador-modulos': typeof CriadorModulosRoute
+  '/escala': typeof EscalaRoute
+  '/insights': typeof InsightsRoute
+  '/linhas-rotas': typeof LinhasRotasRoute
   '/login': typeof LoginRoute
+  '/motoristas': typeof MotoristasRoute
+  '/prestadores': typeof PrestadoresRoute
+  '/relatorios': typeof RelatoriosRoute
+  '/servico-terceirizado': typeof ServicoTerceirizadoRoute
+  '/setores': typeof SetoresRoute
+  '/status-frota': typeof StatusFrotaRoute
+  '/typebot': typeof TypebotRoute
+  '/veiculos': typeof VeiculosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/avaria': typeof AvariaRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/criador-modulos': typeof CriadorModulosRoute
+  '/escala': typeof EscalaRoute
+  '/insights': typeof InsightsRoute
+  '/linhas-rotas': typeof LinhasRotasRoute
   '/login': typeof LoginRoute
+  '/motoristas': typeof MotoristasRoute
+  '/prestadores': typeof PrestadoresRoute
+  '/relatorios': typeof RelatoriosRoute
+  '/servico-terceirizado': typeof ServicoTerceirizadoRoute
+  '/setores': typeof SetoresRoute
+  '/status-frota': typeof StatusFrotaRoute
+  '/typebot': typeof TypebotRoute
+  '/veiculos': typeof VeiculosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login'
+  fullPaths:
+    | '/'
+    | '/avaria'
+    | '/configuracoes'
+    | '/criador-modulos'
+    | '/escala'
+    | '/insights'
+    | '/linhas-rotas'
+    | '/login'
+    | '/motoristas'
+    | '/prestadores'
+    | '/relatorios'
+    | '/servico-terceirizado'
+    | '/setores'
+    | '/status-frota'
+    | '/typebot'
+    | '/veiculos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login'
-  id: '__root__' | '/' | '/login'
+  to:
+    | '/'
+    | '/avaria'
+    | '/configuracoes'
+    | '/criador-modulos'
+    | '/escala'
+    | '/insights'
+    | '/linhas-rotas'
+    | '/login'
+    | '/motoristas'
+    | '/prestadores'
+    | '/relatorios'
+    | '/servico-terceirizado'
+    | '/setores'
+    | '/status-frota'
+    | '/typebot'
+    | '/veiculos'
+  id:
+    | '__root__'
+    | '/'
+    | '/avaria'
+    | '/configuracoes'
+    | '/criador-modulos'
+    | '/escala'
+    | '/insights'
+    | '/linhas-rotas'
+    | '/login'
+    | '/motoristas'
+    | '/prestadores'
+    | '/relatorios'
+    | '/servico-terceirizado'
+    | '/setores'
+    | '/status-frota'
+    | '/typebot'
+    | '/veiculos'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AvariaRoute: typeof AvariaRoute
+  ConfiguracoesRoute: typeof ConfiguracoesRoute
+  CriadorModulosRoute: typeof CriadorModulosRoute
+  EscalaRoute: typeof EscalaRoute
+  InsightsRoute: typeof InsightsRoute
+  LinhasRotasRoute: typeof LinhasRotasRoute
   LoginRoute: typeof LoginRoute
+  MotoristasRoute: typeof MotoristasRoute
+  PrestadoresRoute: typeof PrestadoresRoute
+  RelatoriosRoute: typeof RelatoriosRoute
+  ServicoTerceirizadoRoute: typeof ServicoTerceirizadoRoute
+  SetoresRoute: typeof SetoresRoute
+  StatusFrotaRoute: typeof StatusFrotaRoute
+  TypebotRoute: typeof TypebotRoute
+  VeiculosRoute: typeof VeiculosRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/veiculos': {
+      id: '/veiculos'
+      path: '/veiculos'
+      fullPath: '/veiculos'
+      preLoaderRoute: typeof VeiculosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/typebot': {
+      id: '/typebot'
+      path: '/typebot'
+      fullPath: '/typebot'
+      preLoaderRoute: typeof TypebotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/status-frota': {
+      id: '/status-frota'
+      path: '/status-frota'
+      fullPath: '/status-frota'
+      preLoaderRoute: typeof StatusFrotaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/setores': {
+      id: '/setores'
+      path: '/setores'
+      fullPath: '/setores'
+      preLoaderRoute: typeof SetoresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servico-terceirizado': {
+      id: '/servico-terceirizado'
+      path: '/servico-terceirizado'
+      fullPath: '/servico-terceirizado'
+      preLoaderRoute: typeof ServicoTerceirizadoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/relatorios': {
+      id: '/relatorios'
+      path: '/relatorios'
+      fullPath: '/relatorios'
+      preLoaderRoute: typeof RelatoriosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prestadores': {
+      id: '/prestadores'
+      path: '/prestadores'
+      fullPath: '/prestadores'
+      preLoaderRoute: typeof PrestadoresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/motoristas': {
+      id: '/motoristas'
+      path: '/motoristas'
+      fullPath: '/motoristas'
+      preLoaderRoute: typeof MotoristasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/linhas-rotas': {
+      id: '/linhas-rotas'
+      path: '/linhas-rotas'
+      fullPath: '/linhas-rotas'
+      preLoaderRoute: typeof LinhasRotasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/escala': {
+      id: '/escala'
+      path: '/escala'
+      fullPath: '/escala'
+      preLoaderRoute: typeof EscalaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/criador-modulos': {
+      id: '/criador-modulos'
+      path: '/criador-modulos'
+      fullPath: '/criador-modulos'
+      preLoaderRoute: typeof CriadorModulosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracoes': {
+      id: '/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof ConfiguracoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/avaria': {
+      id: '/avaria'
+      path: '/avaria'
+      fullPath: '/avaria'
+      preLoaderRoute: typeof AvariaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,7 +357,21 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AvariaRoute: AvariaRoute,
+  ConfiguracoesRoute: ConfiguracoesRoute,
+  CriadorModulosRoute: CriadorModulosRoute,
+  EscalaRoute: EscalaRoute,
+  InsightsRoute: InsightsRoute,
+  LinhasRotasRoute: LinhasRotasRoute,
   LoginRoute: LoginRoute,
+  MotoristasRoute: MotoristasRoute,
+  PrestadoresRoute: PrestadoresRoute,
+  RelatoriosRoute: RelatoriosRoute,
+  ServicoTerceirizadoRoute: ServicoTerceirizadoRoute,
+  SetoresRoute: SetoresRoute,
+  StatusFrotaRoute: StatusFrotaRoute,
+  TypebotRoute: TypebotRoute,
+  VeiculosRoute: VeiculosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
