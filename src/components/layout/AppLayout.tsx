@@ -3,6 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Menu, LogOut, Search, Bell } from "lucide-react";
 import { Sidebar } from "./Sidebar";
 import { Footer } from "./Footer";
+import { FloatingChat } from "@/components/chat/FloatingChat";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useAuth, ROLE_LABEL } from "@/lib/auth/AuthContext";
@@ -74,6 +75,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
         <Footer />
       </div>
+
+      <FloatingChat />
     </div>
   );
 }
