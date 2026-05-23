@@ -46,7 +46,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
 
       <div className="border-t border-sidebar-border px-4 py-4">
         <div className="text-[11px] uppercase tracking-[0.14em] text-sidebar-foreground/50">Perfil ativo</div>
-        <div className="mt-1 text-sm font-medium">{ROLE_LABEL[user.role]}</div>
+        <div className="mt-1 text-sm font-medium">{user.role === "master" ? "Acesso executivo" : ROLE_LABEL[user.role]}</div>
         <div className="text-xs text-sidebar-foreground/60 truncate">{user.name}</div>
       </div>
     </aside>

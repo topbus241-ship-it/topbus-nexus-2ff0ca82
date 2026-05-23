@@ -49,5 +49,10 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 export function navForRole(role: UserRole): NavItem[] {
+  // Acesso executivo / master sempre visualiza todos os módulos da plataforma.
+  if (role === "master") {
+    return NAV_ITEMS;
+  }
+
   return NAV_ITEMS.filter((it) => it.roles === "all" || it.roles.includes(role));
 }
