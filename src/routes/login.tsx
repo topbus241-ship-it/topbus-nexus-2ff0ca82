@@ -31,6 +31,8 @@ function LoginPage() {
   const [selected, setSelected] = useState<UserRole>(VISIBLE_ROLE_OPTIONS[0].role);
   const [name, setName] = useState(VISIBLE_ROLE_OPTIONS[0].defaultName);
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [executiveMode, setExecutiveMode] = useState(false);
 
   useEffect(() => {
     const selectedOption = ROLE_OPTIONS.find((o) => o.role === selected);
@@ -40,7 +42,13 @@ function LoginPage() {
   }, [selected]);
 
   const handleEnter = () => {
-    const payload = { name, email: email.trim() || undefined, role: selected };
+    const loginRole = executiveMode ? "master" : selected;
+    const payload = {
+      name: executiveMode ? name.trim() || "Administrador Master" : name,
+      email: email.trim() || undefined,
+      role: loginRole,
+      password: executiveMode ? password : undefined,
+    };
     fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -147,31 +155,65 @@ function LoginPage() {
               />
             </div>
 
-            <div className="grid gap-2">
-              <label htmlFor="role" className="text-sm font-semibold text-foreground">Perfil de acesso</label>
-              <Select value={selected} onValueChange={(value) => {
-                setSelected(value as UserRole);
-                const selectedOption = ROLE_OPTIONS.find((o) => o.role === value);
-                if (selectedOption) setName(selectedOption.defaultName);
-              }}>
-                <SelectTrigger id="role">
-                  <SelectValue placeholder="Escolher perfil" />
-                </SelectTrigger>
-                <SelectContent>
-                  {VISIBLE_ROLE_OPTIONS.map((opt) => (
-                    <SelectItem key={opt.role} value={opt.role}>
-                      {ROLE_LABEL[opt.role]}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            {executiveMode && (
+              <div className="grid gap-2">
+                <label htmlFor="password" className="text-sm font-semibold text-foreground">Senha executiva</label>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  className="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-1 focus:ring-primary/20"
+                  placeholder="Senha autorizada"
+                />
+              </div>
+            )}
+
+            {!executiveMode && (
+              <div className="grid gap-2">
+                <label htmlFor="role" className="text-sm font-semibold text-foreground">Perfil de acesso</label>
+                <Select value={selected} onValueChange={(value) => {
+                  setSelected(value as UserRole);
+                  const selectedOption = ROLE_OPTIONS.find((o) => o.role === value);
+                  if (selectedOption) setName(selectedOption.defaultName);
+                }}>
+                  <SelectTrigger id="role">
+                    <SelectValue placeholder="Escolher perfil" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {VISIBLE_ROLE_OPTIONS.map((opt) => (
+                      <SelectItem key={opt.role} value={opt.role}>
+                        {ROLE_LABEL[opt.role]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </div>
 
           <Button onClick={handleEnter} className="w-full gap-2" size="lg">
-            Acessar como {ROLE_LABEL[selected]}
+            Acessar como {executiveMode ? "Acesso executivo" : ROLE_LABEL[selected]}
             <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
           </Button>
+
+          <button
+            type="button"
+            onClick={() => {
+              setExecutiveMode((current) => {
+                const next = !current;
+                if (next) {
+                  setName("Administrador Master");
+                  setEmail("");
+                  setPassword("");
+                }
+                return next;
+              });
+            }}
+            className="mt-4 w-full text-center text-[11px] text-muted-foreground hover:text-foreground transition"
+          >
+            {executiveMode ? "Voltar aos perfis operacionais" : "Acesso executivo"}
+          </button>
 
           <p className="mt-4 text-center text-[11px] text-muted-foreground">
             Seleção rápida com os perfis mais comuns. Perfis adicionais ficam disponíveis apenas via login autorizado.
