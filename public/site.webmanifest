@@ -1,0 +1,10 @@
+{
+  "name": "AppBus Online",
+  "short_name": "AppBus",
+  "description": "Plataforma operacional para gestão de transporte urbano.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#071827",
+  "theme_color": "#071827",
+  "lang": "pt-BR"
+}

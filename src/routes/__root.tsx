@@ -12,6 +12,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { FloatingChat } from "@/components/chat/FloatingChat";
 
 import appCss from "../styles.css?url";
+import { SITE_URL, SEO_TITLE, SEO_DESCRIPTION, SEO_KEYWORDS, structuredData } from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -75,23 +76,36 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "TopBus OS — Plataforma Operacional" },
-      { name: "description", content: "TopBus OS: plataforma operacional modular para empresas de ônibus urbano. Gestão de frota, avarias, escala, terceirizados e insights." },
-      { name: "author", content: "TopBus OS" },
-      { property: "og:title", content: "TopBus OS — Plataforma Operacional" },
-      { property: "og:description", content: "TopBus OS: plataforma operacional modular para empresas de ônibus urbano. Gestão de frota, avarias, escala, terceirizados e insights." },
+
+      { title: SEO_TITLE },
+      { name: "description", content: SEO_DESCRIPTION },
+      { name: "keywords", content: SEO_KEYWORDS },
+      { name: "author", content: "AppBus Online" },
+      { name: "language", content: "pt-BR" },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { name: "theme-color", content: "#071827" },
+
+      { property: "og:locale", content: "pt_BR" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "TopBus OS — Plataforma Operacional" },
-      { name: "twitter:description", content: "TopBus OS: plataforma operacional modular para empresas de ônibus urbano. Gestão de frota, avarias, escala, terceirizados e insights." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ZUNF20TevSZ6KF4GNh73bWdmpVx1/social-images/social-1779417869251-images.webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/ZUNF20TevSZ6KF4GNh73bWdmpVx1/social-images/social-1779417869251-images.webp" },
+      { property: "og:site_name", content: "AppBus Online" },
+      { property: "og:title", content: SEO_TITLE },
+      { property: "og:description", content: SEO_DESCRIPTION },
+      { property: "og:url", content: SITE_URL },
+      { property: "og:image", content: `${SITE_URL}/og-image.png` },
+      { property: "og:image:alt", content: "Painel operacional AppBus Online" },
+
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: SEO_TITLE },
+      { name: "twitter:description", content: SEO_DESCRIPTION },
+      { name: "twitter:image", content: `${SITE_URL}/og-image.png` },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "canonical", href: `${SITE_URL}/` },
+      { rel: "manifest", href: "/site.webmanifest" },
+      { rel: "icon", href: "/favicon.ico" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "sitemap", type: "application/xml", href: "/sitemap.xml" },
     ],
   }),
   shellComponent: RootShell,
@@ -105,6 +119,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="pt-BR">
       <head>
         <HeadContent />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />
       </head>
       <body>
         {children}

@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /veiculos
+Disallow: /motoristas
+Disallow: /linhas-rotas
+Disallow: /escala
+Disallow: /avaria
+Disallow: /servico-terceirizado
+Disallow: /prestadores
+Disallow: /status-frota
+Disallow: /relatorios
+Disallow: /insights
+Disallow: /criador-modulos
+Disallow: /configuracoes
+
+Sitemap: https://sistema.appbus.online/sitemap.xml
