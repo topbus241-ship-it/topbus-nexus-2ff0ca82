@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { useAuth, ROLE_LABEL } from "@/lib/auth/AuthContext";
@@ -7,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Settings, Bell, Lock, Database, Cpu } from "lucide-react";
+import { isMockModeEnabled, setMockMode } from "@/lib/api/mockMode";
 
 export const Route = createFileRoute("/configuracoes")({
   component: ConfiguracoesPage,
@@ -14,6 +16,18 @@ export const Route = createFileRoute("/configuracoes")({
 
 function ConfiguracoesPage() {
   const { user } = useAuth();
+  const [mockMode, setMockModeState] = useState(false);
+
+  useEffect(() => {
+    setMockModeState(isMockModeEnabled());
+  }, []);
+
+  const handleMockModeChange = (checked: boolean) => {
+    setMockMode(checked);
+    setMockModeState(checked);
+    window.location.reload();
+  };
+
   return (
     <AppLayout>
       <PageHeader breadcrumb="Plataforma" title="Configurações" description="Preferências da plataforma, integrações e segurança." />
@@ -38,9 +52,21 @@ function ConfiguracoesPage() {
           <Button variant="outline" size="sm" className="w-fit">Encerrar todas as sessões</Button>
         </Card>
 
+
+        {user?.role === "master" && (
+          <Card icon={Database} title="Modo de dados">
+            <Toggle
+              label="Mocks demonstrativos"
+              hint={mockMode ? "Ativo: o painel usa dados simulados para apresentação." : "Inativo: o painel usa os dados reais do backend."}
+              checked={mockMode}
+              onCheckedChange={handleMockModeChange}
+            />
+          </Card>
+        )}
+
         <Card icon={Database} title="Integrações">
-          <Toggle label="Backend NestJS + PostgreSQL" hint="Pronto para conexão" />
-          <Toggle label="BI externo (Metabase / Power BI)" hint="Endpoint de leitura preparado" />
+          <Toggle label="Backend + banco de dados" hint="Pronto para conexão" />
+          <Toggle label="BI externo" hint="Endpoint de leitura preparado" />
           <Toggle label="Drive corporativo" hint="Para uploads centralizados" />
         </Card>
 
@@ -74,14 +100,26 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
   );
 }
 
-function Toggle({ label, hint, defaultChecked }: { label: string; hint?: string; defaultChecked?: boolean }) {
+function Toggle({
+  label,
+  hint,
+  defaultChecked,
+  checked,
+  onCheckedChange,
+}: {
+  label: string;
+  hint?: string;
+  defaultChecked?: boolean;
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+}) {
   return (
     <div className="flex items-start justify-between gap-3 rounded-md border border-border bg-card px-3 py-2">
       <div>
         <div className="text-sm font-medium">{label}</div>
         {hint && <div className="text-xs text-muted-foreground">{hint}</div>}
       </div>
-      <Switch defaultChecked={defaultChecked} />
+      <Switch defaultChecked={defaultChecked} checked={checked} onCheckedChange={onCheckedChange} />
     </div>
   );
 }

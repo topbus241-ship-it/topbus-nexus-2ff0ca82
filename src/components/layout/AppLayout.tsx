@@ -39,7 +39,7 @@ export function AppLayout({
     <div className="flex min-h-screen bg-background">
       {/* Desktop sidebar */}
       {showSidebar && (
-        <div className="hidden lg:flex w-64 shrink-0 border-r border-sidebar-border">
+        <div className="hidden lg:flex w-72 shrink-0 border-r border-sidebar-border">
           <Sidebar />
         </div>
       )}
@@ -97,7 +97,7 @@ export function AppLayout({
           </div>
         </header>
 
-        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8 max-w-[1500px] w-full mx-auto">
+        <main className="flex-1 px-4 py-5 sm:px-5 lg:px-6 lg:py-6 max-w-[1360px] w-full mx-auto">
           {children}
         </main>
 

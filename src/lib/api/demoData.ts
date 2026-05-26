@@ -1,0 +1,336 @@
+export const demoData = {
+  dashboardMetrics: [
+    {
+      key: "vehicles",
+      label: "Veículos monitorados",
+      value: "2",
+      delta: "97021 e 21052 em demonstração",
+    },
+    {
+      key: "damages",
+      label: "Avarias registradas",
+      value: "2",
+      delta: "1 com orçamento vinculado",
+    },
+    {
+      key: "services",
+      label: "Serviços terceirizados",
+      value: "1",
+      delta: "Troca de caixa em acompanhamento",
+    },
+    {
+      key: "budget",
+      label: "Orçamentos vinculados",
+      value: "R$ 315,00",
+      delta: "Vidro do letreiro",
+    },
+    {
+      key: "evidence",
+      label: "Evidências fotográficas",
+      value: "10+",
+      delta: "Antes, depois e identificação",
+    },
+    {
+      key: "status",
+      label: "Status operacional",
+      value: "Atenção",
+      delta: "Itens aguardando conferência",
+    },
+  ],
+
+  sectors: [
+    {
+      id: "setor-portaria",
+      name: "Portaria",
+      description: "Registro inicial de avarias, identificação do veículo e coleta de evidências.",
+      moduleCount: 4,
+      recentRecords: 2,
+      status: "operacional",
+    },
+    {
+      id: "setor-manutencao",
+      name: "Manutenção",
+      description: "Análise técnica, orçamento, execução e conferência de serviços.",
+      moduleCount: 8,
+      recentRecords: 3,
+      status: "atencao",
+    },
+    {
+      id: "setor-terceirizados",
+      name: "Terceirizados",
+      description: "Controle de serviços externos, prestadores, fotos antes/depois e valores.",
+      moduleCount: 5,
+      recentRecords: 1,
+      status: "operacional",
+    },
+    {
+      id: "setor-frota",
+      name: "Frota",
+      description: "Acompanhamento de disponibilidade, histórico e impacto operacional.",
+      moduleCount: 6,
+      recentRecords: 2,
+      status: "atencao",
+    },
+  ],
+
+  vehicles: [
+    {
+      id: "veiculo-97021",
+      number: "97021",
+      type: "Ônibus urbano",
+      status: "avaria",
+      note: "Vidro frontal do letreiro quebrado; orçamento vinculado.",
+      plate: "DVO-5448",
+    },
+    {
+      id: "veiculo-21052",
+      number: "21052",
+      type: "Ônibus urbano",
+      status: "manutencao",
+      note: "Troca de caixa de marcha registrada com terceirizado.",
+      plate: "HOK-3657",
+    },
+  ],
+
+  drivers: [
+    {
+      id: "motorista-devair",
+      name: "DEVAIR MENDES DE SOUSA",
+      chapa: "9718482",
+      role: "Motorista urbano",
+      status: "ativo",
+      lastSchedule: "Ocorrência 6531",
+      vehicleNumber: "97021",
+    },
+  ],
+
+  providers: [
+    {
+      id: "prestador-eder",
+      name: "EDER",
+      serviceType: "Mecânica",
+      status: "ativo",
+      servicesCount: 1,
+      accumulatedValue: 0,
+      note: "Prestador vinculado ao serviço de troca da caixa de marcha do veículo 21052.",
+    },
+    {
+      id: "prestador-manutencao-frota",
+      name: "Manutenção de Frota",
+      serviceType: "Peças / Orçamento",
+      status: "ativo",
+      servicesCount: 1,
+      accumulatedValue: 315,
+      note: "Orçamento nº 38.461 para vidro do letreiro do veículo 97021.",
+    },
+  ],
+
+  routes: [
+    {
+      id: "rota-97021-avaria",
+      line: "97021",
+      name: "Avaria / Portaria",
+      origin: "Garagem / Portaria",
+      destination: "Manutenção de Frota",
+      status: "ativa",
+      vehicles: ["97021"],
+      description: "Fluxo demonstrativo de registro de avaria, orçamento e evidências fotográficas.",
+    },
+    {
+      id: "rota-21052-terceirizado",
+      line: "21052",
+      name: "Serviço Terceirizado",
+      origin: "Manutenção",
+      destination: "Prestador EDER",
+      status: "ativa",
+      vehicles: ["21052"],
+      description: "Fluxo demonstrativo de serviço externo com fotos antes e depois da troca de caixa.",
+    },
+  ],
+
+  schedules: [
+    {
+      id: "escala-devair-97021",
+      chapa: "9718482",
+      driverName: "DEVAIR MENDES DE SOUSA",
+      vehicleNumber: "97021",
+      routeName: "Operação urbana",
+      date: "2026-05-06",
+      time: "14:26",
+      status: "comunicacao",
+    },
+  ],
+
+  damageRecords: [
+    {
+      id: "avaria-97021-letreiro",
+      vehicleNumber: "97021",
+      driverName: "DEVAIR MENDES DE SOUSA",
+      chapa: "9718482",
+      description: "VIDRO DO LETREIRO QUEBRADO",
+      createdAt: "06/05/2026",
+      reporter: "Portaria / Manutenção de Frota",
+      totalValue: 315,
+      status: "orcamento",
+      occurrence: "6531",
+      budgetNumber: "38.461",
+      item: "VIDRO ITINER MARCOP TOR GVIU MOBITEC",
+      quantity: 1,
+      unitValue: 265,
+      laborValue: 50,
+      otherValues: 0,
+      driverVersion: "Motorista relata que vidro do letreiro estourou sozinho.",
+      maintenanceVersion: "Foi verificado e encontrado vidro frontal do letreiro quebrado.",
+      evidence: [
+        "foto frontal com número do veículo 97021",
+        "foto traseira com número de ordem do veículo",
+        "fotos laterais de identificação",
+        "foto da avaria no letreiro",
+      ],
+    },
+    {
+      id: "avaria-21052-caixa",
+      vehicleNumber: "21052",
+      driverName: "Não informado",
+      chapa: "Não informado",
+      description: "Registro associado à troca da caixa de marcha",
+      createdAt: "30/04/2026",
+      reporter: "Manutenção / Terceirizado",
+      totalValue: 0,
+      status: "registrada",
+      occurrence: "Serviço terceirizado",
+      item: "Caixa de marcha",
+      serviceReference: "TROCA DA CAIXA DE MARCHA",
+      evidence: [
+        "foto antes do evento com identificação do veículo 21052",
+        "foto antes do evento da caixa de marcha",
+        "foto após o evento com peça instalada",
+      ],
+    },
+  ],
+
+  serviceRecords: [
+    {
+      id: "servico-21052-troca-caixa",
+      vehicleNumber: "21052",
+      providerName: "EDER",
+      serviceType: "Mecânica",
+      serviceDone: "TROCA DA CAIXA DE MARCHA",
+      value: 0,
+      status: "em_andamento",
+      createdAt: "30/04/2026",
+      registeredAt: "07/05/2026 11:29",
+      description: "Serviço de troca de caixa de marcha com evidências fotográficas antes e após o evento.",
+      evidence: [
+        "foto antes do evento - frente do veículo 21052",
+        "foto antes do evento - conjunto mecânico",
+        "foto antes do evento - caixa de marcha",
+        "foto após o evento - conjunto instalado",
+      ],
+    },
+    {
+      id: "servico-97021-orcamento-letreiro",
+      vehicleNumber: "97021",
+      providerName: "Manutenção de Frota",
+      serviceType: "Peça / orçamento",
+      serviceDone: "Orçamento de vidro frontal do letreiro",
+      value: 315,
+      status: "aguardando",
+      createdAt: "06/05/2026",
+      budgetNumber: "38.461",
+      description: "Orçamento composto por vidro do letreiro, mão de obra e valor total informado.",
+    },
+  ],
+
+  fleetStatus: [
+    {
+      vehicleNumber: "97021",
+      status: "avaria",
+      reason: "Vidro do letreiro quebrado",
+      responsibleSector: "Manutenção",
+      priority: "alta",
+    },
+    {
+      vehicleNumber: "21052",
+      status: "manutencao",
+      reason: "Troca da caixa de marcha",
+      responsibleSector: "Terceirizados",
+      priority: "alta",
+    },
+  ],
+
+  insights: [
+    {
+      id: "insight-vidro-letreiro",
+      title: "Avaria com orçamento vinculado",
+      description:
+        "O veículo 97021 possui registro de vidro do letreiro quebrado, orçamento nº 38.461 e custo total de R$ 315,00.",
+      severity: "alerta",
+    },
+    {
+      id: "insight-terceirizado-caixa",
+      title: "Serviço terceirizado com evidência fotográfica",
+      description:
+        "O veículo 21052 possui registro de troca da caixa de marcha com fotos antes e depois do evento.",
+      severity: "critico",
+    },
+    {
+      id: "insight-evidencias",
+      title: "Evidências visuais padronizadas",
+      description:
+        "Os registros enviados indicam padrão útil para o sistema: identificação do veículo, fotos antes, fotos depois, orçamento e comunicação formal.",
+      severity: "info",
+    },
+  ],
+
+  uploadedDocuments: [
+    {
+      id: "doc-97021-avr",
+      fileName: "9718482-2026-05-AVR-16-74226150600-DEVAIR-MENDES-DE-SOUSA-001.pdf",
+      sector: "Avaria / Portaria",
+      uploadedAt: "08/05/2026 11:58",
+      vehicleNumber: "97021",
+      driverName: "DEVAIR MENDES DE SOUSA",
+    },
+    {
+      id: "doc-21052-terceirizado",
+      fileName: "TROCA DE CAIXA - TERCEIRIZADO.pdf",
+      sector: "Serviço Terceirizado",
+      uploadedAt: "08/05/2026 12:00",
+      vehicleNumber: "21052",
+      providerName: "EDER",
+    },
+    {
+      id: "doc-97021-orcamento",
+      fileName: "RECIBO DE ORCAMENTO - 38461 - VEICULO 97021.pdf",
+      sector: "Manutenção de Frota",
+      uploadedAt: "06/05/2026",
+      vehicleNumber: "97021",
+      totalValue: 315,
+    },
+  ],
+
+  moduleDefinitions: [
+    {
+      id: "mod-avaria-portaria",
+      name: "Avaria / Portaria",
+      sector: "Manutenção",
+      status: "ativo",
+      description: "Registro de avarias com motorista, veículo, fotos e custo.",
+    },
+    {
+      id: "mod-servico-terceirizado",
+      name: "Serviço Terceirizado",
+      sector: "Manutenção",
+      status: "ativo",
+      description: "Controle de prestadores, serviço executado, fotos antes/depois e conferência.",
+    },
+    {
+      id: "mod-orcamento",
+      name: "Orçamentos e custos",
+      sector: "Financeiro",
+      status: "planejado",
+      description: "Vinculação de orçamento, item, mão de obra e valor total ao registro operacional.",
+    },
+  ],
+} as const;

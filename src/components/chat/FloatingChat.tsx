@@ -259,8 +259,8 @@ export function FloatingChat() {
             "fixed z-50 bg-card border border-border shadow-2xl flex flex-col overflow-hidden",
             // Mobile: full-width sheet from bottom
             "bottom-0 right-0 left-0 h-[85vh] rounded-t-2xl",
-            // Desktop: floating panel
-            "sm:bottom-24 sm:right-5 sm:left-auto sm:h-[560px] sm:w-[400px] sm:rounded-2xl",
+            // Desktop: floating panel constrained inside the visible dashboard area
+            "sm:top-20 sm:bottom-20 sm:right-5 sm:left-auto sm:h-auto sm:w-[420px] sm:max-w-[calc(100vw-2.5rem)] sm:rounded-2xl",
           )}
         >
           {/* Header */}
