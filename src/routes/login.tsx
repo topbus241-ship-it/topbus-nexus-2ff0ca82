@@ -33,6 +33,7 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [executiveMode, setExecutiveMode] = useState(false);
+  const [loginError, setLoginError] = useState("");
 
   useEffect(() => {
     const selectedOption = ROLE_OPTIONS.find((o) => o.role === selected);
@@ -42,6 +43,7 @@ function LoginPage() {
   }, [selected]);
 
   const handleEnter = () => {
+    setLoginError("");
     const loginRole = executiveMode ? "master" : selected;
     const payload = {
       name: executiveMode ? name.trim() || "Administrador Master" : name,
@@ -55,16 +57,37 @@ function LoginPage() {
       body: JSON.stringify(payload),
     })
       .then(async (r) => {
-        if (!r.ok) throw new Error('login_failed');
+        if (!r.ok) {
+          const message = await r.text().catch(() => "");
+          throw new Error(message || "login_failed");
+        }
+
         return r.json();
       })
       .then((data) => {
-        login({ id: data.user.id, name: data.user.name, email: data.user.email, role: data.user.role }, data.token);
+        if (executiveMode && data?.user?.role !== "master") {
+          throw new Error("invalid_master_role");
+        }
+
+        login(
+          {
+            id: data.user.id,
+            name: data.user.name,
+            email: data.user.email,
+            role: data.user.role,
+          },
+          data.token,
+        );
+
         navigate({ to: '/' });
       })
       .catch(() => {
-        login({ name, email: email.trim() || undefined, role: selected });
-        navigate({ to: '/' });
+        if (executiveMode) {
+          setLoginError("Acesso executivo não autorizado. Verifique email e senha master.");
+          return;
+        }
+
+        setLoginError("Não foi possível autenticar este perfil. Verifique os dados e tente novamente.");
       });
   };
 
@@ -191,6 +214,12 @@ function LoginPage() {
               </div>
             )}
           </div>
+
+          {loginError && (
+            <div className="mb-4 rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+              {loginError}
+            </div>
+          )}
 
           <Button onClick={handleEnter} className="w-full gap-2" size="lg">
             Acessar como {executiveMode ? "Acesso executivo" : ROLE_LABEL[selected]}

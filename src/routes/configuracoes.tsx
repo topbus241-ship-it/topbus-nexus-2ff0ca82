@@ -36,7 +36,7 @@ function ConfiguracoesPage() {
         <Card icon={Settings} title="Perfil">
           <Row label="Nome"><Input defaultValue={user?.name} /></Row>
           <Row label="Perfil de acesso"><Input value={user ? ROLE_LABEL[user.role] : ""} readOnly /></Row>
-          <Row label="E-mail"><Input placeholder="usuario@topbus.com.br" /></Row>
+          <Row label="E-mail"><Input value={user?.email ?? ""} readOnly placeholder="Email não informado" /></Row>
         </Card>
 
         <Card icon={Bell} title="Notificações">

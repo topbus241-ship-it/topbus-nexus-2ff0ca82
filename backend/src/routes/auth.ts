@@ -60,7 +60,10 @@ router.post('/login', async (req, res) => {
   }
 
   const normalizedRole = roleValue as UserRole;
-  const userEmail = email ? String(email).trim().toLowerCase() : `${normalizedRole}@local`;
+  const userEmail =
+    normalizedRole === 'master'
+      ? (email ? String(email).trim().toLowerCase() : MASTER_EMAIL)
+      : (email ? String(email).trim().toLowerCase() : `${normalizedRole}@local`);
 
   if (normalizedRole === 'master') {
     if (!MASTER_PASSWORD) {
