@@ -1,0 +1,60 @@
+name: appbus-chat
+
+services:
+  appbus-chat-db:
+    image: postgres:16
+    container_name: appbus-chat-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - appbus-chat-db-data:/var/lib/postgresql/data
+    networks:
+      - appbus-chat-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  appbus-chat-builder:
+    image: baptistearno/typebot-builder:latest
+    container_name: appbus-chat-builder
+    restart: unless-stopped
+    depends_on:
+      appbus-chat-db:
+        condition: service_healthy
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:28080:3000"
+    networks:
+      - appbus-chat-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  appbus-chat-viewer:
+    image: baptistearno/typebot-viewer:latest
+    container_name: appbus-chat-viewer
+    restart: unless-stopped
+    depends_on:
+      appbus-chat-db:
+        condition: service_healthy
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:28081:3000"
+    networks:
+      - appbus-chat-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  appbus-chat-db-data:
+
+networks:
+  appbus-chat-network:
+    driver: bridge
+    attachable: true
