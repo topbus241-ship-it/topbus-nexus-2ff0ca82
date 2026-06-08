@@ -7,6 +7,7 @@ import { FormSection } from "@/components/forms/FormSection";
 import { UploadBox } from "@/components/forms/UploadBox";
 import { SignatureBox } from "@/components/forms/SignatureBox";
 import { StatusBadge } from "@/components/common/StatusBadge";
+import { ProtocolSuccess } from "@/components/common/ProtocolSuccess";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -20,10 +21,18 @@ export const Route = createFileRoute("/avaria")({
 });
 
 const brl = (v: number) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const generateProtocolNumber = () => `AV-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
 function AvariaPage() {
   const { data: records = [] } = useQuery({ queryKey: ["damages"], queryFn: getDamageRecords });
   const [open, setOpen] = useState(false);
+  const [successProtocol, setSuccessProtocol] = useState<{
+    protocol: string;
+    collaboratorName: string;
+    collaboratorId: string;
+  } | null>(null);
+  const [collaboratorName, setCollaboratorName] = useState("Portaria - Turno 1");
+  const [collaboratorId, setCollaboratorId] = useState("");
 
   const [qty, setQty] = useState(1);
   const [unit, setUnit] = useState(230);
@@ -33,25 +42,54 @@ function AvariaPage() {
   const total = useMemo(() => qty * unit + labor + other, [qty, unit, labor, other]);
 
   return (
-    <AppLayout>
-      <PageHeader
-        breadcrumb="Manutenção"
-        title="Avaria / Portaria"
-        description="Registro de avarias identificadas pela portaria, com cálculo automático de custo."
-        actions={
-          <Button size="sm" className="gap-1.5" onClick={() => setOpen((v) => !v)}>
-            <Plus className="h-3.5 w-3.5" /> {open ? "Fechar formulário" : "Nova avaria"}
-          </Button>
-        }
-      />
+    <AppLayout allowUnauthenticated>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
+        <PageHeader
+          breadcrumb="Manutenção"
+          title="Avaria / Portaria"
+          description="Registro de avarias identificadas pela portaria, com cálculo automático de custo."
+          actions={
+            <Button size="sm" className="gap-1.5" onClick={() => setOpen((v) => !v)}>
+              <Plus className="h-3.5 w-3.5" /> {open ? "Fechar formulário" : "Nova avaria"}
+            </Button>
+          }
+        />
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => window.history.back()}
+          className="w-full sm:w-auto text-xs sm:text-sm"
+        >
+          ← Voltar
+        </Button>
+      </div>
 
-      {open && (
+      {successProtocol && (
+        <ProtocolSuccess
+          protocol={successProtocol.protocol}
+          moduleType="avaria"
+          collaboratorName={successProtocol.collaboratorName}
+          collaboratorId={successProtocol.collaboratorId}
+          onReset={() => {
+            setSuccessProtocol(null);
+            setOpen(false);
+            setCollaboratorName("Portaria - Turno 1");
+            setCollaboratorId("");
+          }}
+        />
+      )}
+
+      {!successProtocol && open && (
         <form
           className="space-y-4 mb-8"
           onSubmit={(e) => {
             e.preventDefault();
-            toast.success("Avaria registrada", { description: `Total calculado: ${brl(total)}` });
-            setOpen(false);
+            const newProtocol = generateProtocolNumber();
+            setSuccessProtocol({
+              protocol: newProtocol,
+              collaboratorName,
+              collaboratorId: collaboratorId || "N/A",
+            });
           }}
         >
           <FormSection title="Identificação" description="Veículo, motorista e responsável pelo registro.">
@@ -59,7 +97,20 @@ function AvariaPage() {
               <Field label="Veículo"><Input defaultValue="97021" /></Field>
               <Field label="Motorista"><Input defaultValue="DEVAIR MENDES DE SOUSA" /></Field>
               <Field label="Chapa"><Input defaultValue="9718482" /></Field>
-              <Field label="Apontador / Portaria"><Input defaultValue="Portaria - Turno 1" /></Field>
+              <Field label="Apontador / Portaria (seu nome)">
+                <Input
+                  value={collaboratorName}
+                  onChange={(e) => setCollaboratorName(e.target.value)}
+                  placeholder="Nome ou turno"
+                />
+              </Field>
+              <Field label="ID / Matrícula">
+                <Input
+                  value={collaboratorId}
+                  onChange={(e) => setCollaboratorId(e.target.value)}
+                  placeholder="Deixe em branco se não aplicável"
+                />
+              </Field>
             </div>
           </FormSection>
 
@@ -78,6 +129,15 @@ function AvariaPage() {
               <UploadBox />
             </div>
           </FormSection>
+          
+          <FormSection title="Foto de comprovação" description="Foto ANTES da avaria para comparativo com a conclusão.">
+            <div className="grid gap-3 sm:grid-cols-1">
+              <div>
+                <Label className="text-xs mb-1.5 block">Foto ANTES (situação atual)</Label>
+                <UploadBox label="Adicionar foto antes" hint="JPG ou PNG" multiple={false} />
+              </div>
+            </div>
+          </FormSection>
 
           <FormSection title="Custo" description="Cálculo automático com base nos itens informados.">
             <div className="grid gap-3 sm:grid-cols-2">
@@ -86,6 +146,7 @@ function AvariaPage() {
               <Field label="Valor unitário (R$)"><Input type="number" value={unit} onChange={(e) => setUnit(+e.target.value || 0)} /></Field>
               <Field label="Mão de obra (R$)"><Input type="number" value={labor} onChange={(e) => setLabor(+e.target.value || 0)} /></Field>
               <Field label="Outros valores (R$)"><Input type="number" value={other} onChange={(e) => setOther(+e.target.value || 0)} /></Field>
+              <Field label="Orçamento (R$)"><Input type="number" defaultValue="4500" /></Field>
               <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 flex flex-col justify-center">
                 <div className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">Valor total</div>
                 <div className="text-xl font-semibold tabular-nums text-primary">{brl(total)}</div>
@@ -93,8 +154,21 @@ function AvariaPage() {
             </div>
           </FormSection>
 
-          <FormSection title="Assinatura" description="Confirme com a assinatura do responsável.">
-            <SignatureBox />
+          <FormSection title="Documentos" description="Adicione o arquivo de cobrança ou autorização em PDF.">
+            <UploadBox label="PDF cobrança / autorização" hint="PDF ou imagem" multiple={false} />
+          </FormSection>
+
+          <FormSection title="Assinatura" description="Assinaturas do motorista/portaria e do revisor.">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <Label className="text-xs mb-1.5 block">Assinatura do motorista / portaria</Label>
+                <SignatureBox />
+              </div>
+              <div>
+                <Label className="text-xs mb-1.5 block">Assinatura do revisor</Label>
+                <SignatureBox />
+              </div>
+            </div>
             <div className="flex justify-end">
               <Button type="submit" className="gap-2"><Save className="h-4 w-4" /> Salvar avaria</Button>
             </div>
@@ -102,6 +176,7 @@ function AvariaPage() {
         </form>
       )}
 
+      {!successProtocol && (
       <div className="rounded-xl border border-border bg-card overflow-hidden">
         <div className="border-b border-border px-5 py-4 flex items-center gap-2">
           <ShieldAlert className="h-4 w-4 text-primary" strokeWidth={1.75} />
@@ -134,6 +209,7 @@ function AvariaPage() {
           ))}
         </ul>
       </div>
+      )}
     </AppLayout>
   );
 }
